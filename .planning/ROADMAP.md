@@ -160,7 +160,7 @@
 
 | # | Phase | Goal | Requirements | Plans | Status |
 |---|-------|------|--------------|-------|--------|
-| 1 | Foundation | Core types & buffer | 6 | 10 | ◆ In Progress (3/10 complete) |
+| 1 | Foundation | Core types & buffer | 6 | 10 | ◆ In Progress (4/10 complete) |
 | 2 | Core Parsing | Field & line parsing | 6 | 4 | ○ Pending |
 | 3 | Message Assembly | Multi-line handling | 3 | 3 | ○ Pending |
 | 4 | Public API | Facade & callbacks | 6 | 4 | ○ Pending |
@@ -213,4 +213,4 @@ Phases are strictly sequential due to dependencies.
 ---
 
 *Roadmap created: 2025-03-17*  
-*Last updated: 2025-03-17 - Error code tests complete (test_error_codes.cpp with 100% coverage)*
+*Last updated: 2026-03-17 - Buffer tests complete (01-08), 31 test cases, 95% coverage, CRLF bug fixed*

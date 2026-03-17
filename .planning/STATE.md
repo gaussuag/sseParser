@@ -1,8 +1,8 @@
 # State: SSE Parser
 
 **Current Phase:** 1 - Foundation (In Progress)  
-**Last Updated:** 2025-03-17  
-**Overall Progress:** 30%
+**Last Updated:** 2026-03-17  
+**Overall Progress:** 40%
 
 ---
 
@@ -19,7 +19,7 @@ See: `.planning/PROJECT.md` (updated 2025-03-17)
 
 | Phase | Status | Plans Complete | Progress |
 |-------|--------|----------------|----------|
-| 1: Foundation | ◆ In Progress | 3/10 | 30% |
+| 1: Foundation | ◆ In Progress | 4/10 | 40% |
 | 2: Core Parsing | ○ Not Started | 0/4 | 0% |
 | 3: Message Assembly | ○ Not Started | 0/3 | 0% |
 | 4: Public API | ○ Not Started | 0/4 | 0% |
@@ -84,18 +84,17 @@ None
 | 2025-03-17 | 动态缓冲区 | 改为std::string实现，可用性优先 |
 | 2025-03-17 | 手动规划 | 使用Kimi K2.5直接创建执行计划 |
 | 2025-03-17 | Buffer使用std::string | RAII内存管理，自动扩容和压缩 |
+| 2026-03-17 | Fixed CRLF handling in Buffer | Discovered bug during testing, fixed read_line() to properly skip both CR and LF in CRLF sequences |
 
 ---
 
 ## Next Actions
 
-1. Execute Phase 1: Foundation using `/gsd-execute-phase 1`
-   - Wave 1: 01-01 to 01-04 (Project structure + Core headers)
-   - Wave 2: 01-06 to 01-08 (Tests)
-   - Wave 3: 01-05, 01-09, 01-10 (Integration + Build)
-2. Or execute manually following plan files in `.planning/phases/01-foundation/`
-3. Verify build with `cmake --build` and `ctest`
-4. Target: 90%+ test coverage
+1. ✅ Wave 1 complete: 01-01 to 01-04 (Project structure + Core headers)
+2. ✅ Wave 2 complete: 01-06 to 01-08 (Tests)
+3. 🔄 Wave 3 pending: 01-05, 01-09, 01-10 (Integration + Build)
+4. Current status: 51 tests passing, Buffer has 95% coverage
+5. Ready to continue with Phase 1 completion
 
 ---
 
