@@ -36,6 +36,12 @@
 3. 错误码可正确返回和转换
 4. 代码通过编译器 C++17 检查
 
+**测试交付:**
+- `tests/test_ring_buffer.cpp` - 环形缓冲区单元测试（15+测试用例）
+- `tests/test_error_codes.cpp` - 错误码系统测试
+- `tests/test_message.cpp` - Message结构体验证
+- 目标：90%行覆盖率
+
 **Estimated Plans:** 3
 
 ---
@@ -59,6 +65,12 @@
 4. 注释行被跳过
 5. 无效 retry 返回错误码
 
+**测试交付:**
+- `tests/test_field_parser.cpp` - 字段解析测试（12+用例）
+- `tests/test_line_endings.cpp` - 换行符样式矩阵测试（9种组合）
+- 包含Spec合规性验证测试
+- 目标：85%行覆盖率
+
 **Estimated Plans:** 4
 
 ---
@@ -77,6 +89,11 @@
 2. 空消息触发回调（data为空字符串）
 3. 消息边界正确检测
 4. ID 字段正确跟踪
+
+**测试交付:**
+- `tests/test_message_builder.cpp` - 消息组装测试（8+用例）
+- 包含多行数据累积验证
+- 目标：90%行覆盖率
 
 **Estimated Plans:** 3
 
@@ -101,6 +118,12 @@
 4. reset() 正确清空状态
 5. string_view 接口零拷贝
 
+**测试交付:**
+- `tests/test_sse_parser.cpp` - 完整解析器API测试（12+用例）
+- 分块输入模拟测试
+- 回调类型测试（std::function + 函数指针）
+- 目标：85%行覆盖率
+
 **Estimated Plans:** 4
 
 ---
@@ -120,6 +143,14 @@
 3. 性能达到 >100MB/s 解析速度
 4. 完整 API 文档（使用示例）
 5. 嵌入式编译器验证（GCC/Clang/MSVC）
+
+**测试交付:**
+- `tests/test_integration.cpp` - 集成测试（LLM场景模拟）
+- `tests/test_fuzzing.cpp` - 模糊测试（1000+随机输入）
+- `tests/test_performance.cpp` - 性能基准测试（>100MB/s目标）
+- `tests/test_edge_cases.cpp` - 边界条件测试
+- 需求追溯矩阵验证
+- 完整测试文档
 
 **Estimated Plans:** 3
 
@@ -174,6 +205,10 @@ Phases are strictly sequential due to dependencies.
 - **Granularity:** Standard (balanced phase size)
 - **Parallelization:** Sequential (phases have dependencies)
 - **Research:** Completed — see `.planning/research/`
+- **Testing:** Google Test (gtest) — see `.planning/TESTING.md`
+  - Phase 1-4: 单元测试 + 覆盖率目标
+  - Phase 5: 集成测试 + Fuzzing + 性能测试
+  - 总体目标: 100% P0需求覆盖
 
 ---
 
