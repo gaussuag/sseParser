@@ -1,8 +1,8 @@
 # State: SSE Parser
 
 **Current Phase:** 1 - Foundation (In Progress)  
-**Last Updated:** 2026-03-17  
-**Overall Progress:** 40%
+**Last Updated:** 2026-03-17 (Tue)  
+**Overall Progress:** 50%
 
 ---
 
@@ -85,6 +85,8 @@ None
 | 2025-03-17 | 手动规划 | 使用Kimi K2.5直接创建执行计划 |
 | 2025-03-17 | Buffer使用std::string | RAII内存管理，自动扩容和压缩 |
 | 2026-03-17 | Fixed CRLF handling in Buffer | Discovered bug during testing, fixed read_line() to properly skip both CR and LF in CRLF sequences |
+| 2026-03-17 | Unified namespace to `sse` | Changed from `sse_parser` to `sse` for brevity; added backward compatibility alias |
+| 2026-03-17 | Created main header sse_parser.h | Single include point with version macros (1.0.0) and all component includes |
 
 ---
 
