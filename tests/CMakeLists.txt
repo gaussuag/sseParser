@@ -2,6 +2,7 @@ add_executable(${PROJECT_NAME}_tests
     main_test.cpp
     test_error_codes.cpp
     test_message.cpp
+    test_buffer.cpp
 )
 
 target_link_vcpkg_deps(${PROJECT_NAME}_tests)

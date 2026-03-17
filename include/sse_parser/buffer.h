@@ -73,8 +73,15 @@ inline std::optional<std::string_view> Buffer::read_line() {
 
     read_pos_ = line_end;
 
-    if (read_pos_ < buffer_.size() && buffer_[read_pos_] == '\n') {
-        ++read_pos_;
+    // Handle line endings: LF, CRLF, or CR
+    if (read_pos_ < buffer_.size() && buffer_[read_pos_] == '\r') {
+        ++read_pos_;  // Skip the CR
+        // If this is CRLF, also skip the LF
+        if (read_pos_ < buffer_.size() && buffer_[read_pos_] == '\n') {
+            ++read_pos_;
+        }
+    } else if (read_pos_ < buffer_.size() && buffer_[read_pos_] == '\n') {
+        ++read_pos_;  // Skip the LF
     }
 
     while (line_length > 0 && 
