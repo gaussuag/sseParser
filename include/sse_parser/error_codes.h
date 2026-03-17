@@ -8,7 +8,8 @@ enum class SseError : uint8_t {
     success = 0,
     incomplete_message,
     invalid_retry,
-    out_of_memory
+    out_of_memory,
+    buffer_overflow
 };
 
 inline const char* error_message(SseError error) noexcept {
@@ -21,6 +22,8 @@ inline const char* error_message(SseError error) noexcept {
             return "Invalid retry value";
         case SseError::out_of_memory:
             return "Out of memory";
+        case SseError::buffer_overflow:
+            return "Buffer overflow";
     }
     return "Unknown error";
 }
