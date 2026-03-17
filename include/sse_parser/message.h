@@ -3,7 +3,7 @@
 #include <optional>
 #include <string>
 
-namespace sse_parser {
+namespace sse {
 
 struct Message {
     std::string event = "message";

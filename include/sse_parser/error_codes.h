@@ -2,7 +2,7 @@
 
 #include <cstdint>
 
-namespace sse_parser {
+namespace sse {
 
 enum class SseError : uint8_t {
     success = 0,

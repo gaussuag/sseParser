@@ -8,7 +8,7 @@
 
 #include "error_codes.h"
 
-namespace sse_parser {
+namespace sse {
 
 class Buffer {
 public:

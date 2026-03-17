@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include "sse_parser/error_codes.h"
 
-using namespace sse_parser;
+using namespace sse;
 
 TEST(ErrorCodes, EnumValues) {
     EXPECT_EQ(static_cast<uint8_t>(SseError::success), 0);

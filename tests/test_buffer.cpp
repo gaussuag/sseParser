@@ -3,7 +3,7 @@
 #include <string>
 #include <string_view>
 
-using namespace sse_parser;
+using namespace sse;
 
 class BufferTest : public ::testing::Test {
 protected:

@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include <sse_parser/message.h>
 
-using namespace sse_parser;
+using namespace sse;
 
 TEST(Message, DefaultConstruction) {
     Message msg;
