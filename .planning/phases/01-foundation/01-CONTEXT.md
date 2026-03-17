@@ -92,7 +92,7 @@ struct Message {
 ### Testing Requirements
 
 **Test Deliverables:**
-- `tests/test_ring_buffer.cpp` - 15+ test cases, 90% coverage target
+- `tests/test_buffer.cpp` - 15+ test cases, 90% coverage target (tests std::string buffer implementation)
 - `tests/test_error_codes.cpp` - Error code and message tests
 - `tests/test_message.cpp` - Message structure validation
 
