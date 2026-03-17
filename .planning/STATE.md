@@ -19,7 +19,7 @@ See: `.planning/PROJECT.md` (updated 2025-03-17)
 
 | Phase | Status | Plans Complete | Progress |
 |-------|--------|----------------|----------|
-| 1: Foundation | ◆ Ready | 0/10 | 10% |
+| 1: Foundation | ◆ In Progress | 1/10 | 15% |
 | 2: Core Parsing | ○ Not Started | 0/4 | 0% |
 | 3: Message Assembly | ○ Not Started | 0/3 | 0% |
 | 4: Public API | ○ Not Started | 0/4 | 0% |
@@ -33,8 +33,8 @@ See: `.planning/PROJECT.md` (updated 2025-03-17)
 
 | ID | Requirement | Phase | Status |
 |----|-------------|-------|--------|
-| ERR-01 | 错误码系统 | 1 | ○ Pending |
-| ERR-02 | 错误信息字符串 | 1 | ○ Pending |
+| ERR-01 | 错误码系统 | 1 | ✓ Complete |
+| ERR-02 | 错误信息字符串 | 1 | ✓ Complete |
 | MSG-01 | Message 结构体 | 1 | ○ Pending |
 | BUF-01 | 环形缓冲区 | 1 | ○ Pending |
 | PAR-01 | 字段解析 | 2 | ○ Pending |
