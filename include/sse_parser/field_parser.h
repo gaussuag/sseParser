@@ -1,3 +1,16 @@
+/**
+ * @file field_parser.h
+ * @brief SSE field line parsing functions
+ * @ingroup Parsing
+ *
+ * Parses SSE field lines per W3C spec including:
+ * - Field:value format
+ * - Leading space handling
+ * - Comment skipping
+ * - Retry validation
+ * - UTF-8 BOM detection
+ */
+
 #pragma once
 
 #include <optional>
@@ -9,8 +22,23 @@
 
 namespace sse {
 
-// Internal: Parse retry field value
-// Validates: must be valid positive integer, checks overflow
+/**
+ * @brief Parse retry field value with overflow protection
+ * @param value String containing retry value
+ * @param result Output parameter for parsed integer
+ * @return SseError::success on valid retry, SseError::invalid_retry on error
+ *
+ * Validates retry field per SSE spec:
+ * - Must be valid positive integer
+ * - Detects integer overflow
+ * - Rejects negative numbers and non-digits
+ *
+ * @code
+ * int retry_ms;
+ * SseError err = parse_retry_value("5000", retry_ms);
+ * // retry_ms == 5000, err == SseError::success
+ * @endcode
+ */
 inline SseError parse_retry_value(std::string_view value, int& result) {
     if (value.empty()) {
         return SseError::invalid_retry;
@@ -63,9 +91,25 @@ inline SseError parse_retry_value(std::string_view value, int& result) {
     return SseError::success;
 }
 
-// Parse a single SSE field line
-// Format: "field: value" or "field:value" or "field" (empty value)
-// Returns: success, or error if validation fails (e.g., invalid retry)
+/**
+ * @brief Parse a single SSE field line
+ * @param line The field line to parse
+ * @param msg Message struct to populate with parsed data
+ * @return SseError::success on success, SseError::invalid_retry on bad retry value
+ *
+ * Parses field lines per W3C SSE spec:
+ * - Format: "field: value" or "field:value" or "field" (empty value)
+ * - Removes exactly one leading space after colon (PAR-03)
+ * - Skips comment lines starting with ':'
+ * - Handles event, data, id, retry fields
+ * - Silently ignores unknown fields
+ *
+ * @code
+ * Message msg;
+ * SseError err = parse_field_line("data: hello", msg);
+ * // msg.data == "hello"
+ * @endcode
+ */
 inline SseError parse_field_line(std::string_view line, Message& msg) {
     // Skip comment lines (start with ':')
     if (!line.empty() && line[0] == ':') {
@@ -113,7 +157,14 @@ inline SseError parse_field_line(std::string_view line, Message& msg) {
     return SseError::success;
 }
 
-// EXT-01: Check if data starts with UTF-8 BOM
+/**
+ * @brief Check if data starts with UTF-8 BOM (EXT-01)
+ * @param data String view to check
+ * @return true if data starts with UTF-8 BOM (0xEF 0xBB 0xBF)
+ *
+ * UTF-8 BOM detection for stream initialization. SSE streams may
+ * include BOM at the start which should be skipped.
+ */
 inline bool has_bom(std::string_view data) {
     return data.size() >= 3 &&
            static_cast<unsigned char>(data[0]) == 0xEF &&
@@ -121,9 +172,19 @@ inline bool has_bom(std::string_view data) {
            static_cast<unsigned char>(data[2]) == 0xBF;
 }
 
-// EXT-01: Check and skip UTF-8 BOM
-// Returns: true if BOM was found and skipped, false otherwise
-// If BOM found, the view is advanced past the BOM bytes
+/**
+ * @brief Check and skip UTF-8 BOM if present (EXT-01)
+ * @param data String view to check and modify
+ * @return true if BOM was found and skipped, false otherwise
+ *
+ * If BOM is detected, advances the view past the 3 BOM bytes.
+ * Safe to call on any data - only modifies if BOM present.
+ *
+ * @code
+ * std::string_view data = "\xEF\xBB\xBFdata: hello";
+ * skip_bom(data);  // data now starts with "data: hello"
+ * @endcode
+ */
 inline bool skip_bom(std::string_view& data) {
     if (has_bom(data)) {
         data = data.substr(3);
