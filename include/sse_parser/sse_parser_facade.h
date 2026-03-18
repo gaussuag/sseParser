@@ -54,6 +54,37 @@ public:
         builder_.set_callback(callback_);
     }
 
+    // API-04: Flush incomplete message at stream end
+    inline SseError flush() {
+        // Case 1: No incomplete message → success, no callback
+        if (buffer_.empty()) {
+            return SseError::success;
+        }
+
+        // Case 2: Process any remaining complete lines first
+        while (auto line = buffer_.read_line()) {
+            SseError err = builder_.feed_line(*line);
+            if (err != SseError::success) {
+                return err;
+            }
+        }
+
+        // Case 3: Handle incomplete final line (no trailing newline)
+        auto leftover = buffer_.view();
+        if (!leftover.empty()) {
+            // Feed as final line without newline
+            SseError err = builder_.feed_line(leftover);
+            if (err != SseError::success) {
+                return err;
+            }
+            // Force message completion
+            builder_.feed_line("");  // Empty line triggers completion
+        }
+
+        buffer_.clear();
+        return SseError::success;
+    }
+
     // Utility accessors
     inline const std::string& last_event_id() const {
         return last_event_id_;
