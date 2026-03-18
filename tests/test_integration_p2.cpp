@@ -7,12 +7,14 @@ using namespace sse;
 
 // Helper: Parse a complete SSE message from buffer
 // Returns true if a complete message was parsed
+// Returns false if error occurred or no complete message available
 static bool parse_message(Buffer& buf, Message& msg) {
     if (!buf.has_complete_message()) {
         return false;
     }
     
     msg.clear();
+    bool had_error = false;
     
     while (true) {
         auto line_opt = buf.read_line();
@@ -24,17 +26,24 @@ static bool parse_message(Buffer& buf, Message& msg) {
         
         // Empty line indicates message boundary
         if (line.empty()) {
+            // If we had an error, reset and continue to next message
+            if (had_error) {
+                had_error = false;
+                msg.clear();
+                continue;
+            }
             return true;
         }
         
         SseError err = parse_field_line(line, msg);
         if (err != SseError::success) {
-            // Error in field parsing - propagate
-            return false;
+            // Error in field parsing - mark error but continue to consume this message
+            had_error = true;
         }
     }
     
-    return true;
+    // If we exit loop without finding boundary, message is incomplete
+    return false;
 }
 
 // Helper: Parse a simple data-only message
