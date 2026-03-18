@@ -1,3 +1,12 @@
+/**
+ * @file buffer.h
+ * @brief Dynamic buffer for SSE stream buffering
+ * @ingroup Core
+ *
+ * Provides line-based reading with automatic compaction.
+ * Supports configurable max size with overflow protection.
+ */
+
 #pragma once
 
 #include <cstddef>
@@ -10,23 +19,97 @@
 
 namespace sse {
 
+/**
+ * @class Buffer
+ * @brief Dynamic buffer for accumulating and reading SSE stream data
+ *
+ * Provides efficient line-based reading with automatic compaction
+ * to maximize usable space. Supports LF, CRLF, and CR line endings.
+ *
+ * @code
+ * Buffer buf(8192);  // 8KB max size
+ * buf.append("data: hello\n\n", 13);
+ * auto line = buf.read_line();  // "data: hello"
+ * @endcode
+ */
 class Buffer {
 public:
+    /**
+     * @brief Default constructor with 4KB max size
+     */
     Buffer() = default;
+
+    /**
+     * @brief Construct buffer with custom max size
+     * @param max_size Maximum bytes the buffer can hold
+     */
     explicit Buffer(size_t max_size) : max_size_(max_size) {}
 
+    /**
+     * @brief Append raw bytes to buffer
+     * @param data Pointer to data to append
+     * @param len Number of bytes to append
+     * @return SseError::success on success, SseError::buffer_overflow if full
+     *
+     * Automatically compacts buffer if needed to make room.
+     */
     SseError append(const char* data, size_t len);
+
+    /**
+     * @brief Append string_view to buffer (zero-copy wrapper)
+     * @param data String view to append
+     * @return SseError indicating success or overflow
+     */
     SseError append(std::string_view data);
 
+    /**
+     * @brief Read next complete line from buffer
+     * @return string_view of line content, or nullopt if no complete line
+     *
+     * Handles LF, CRLF, and CR line endings. Returns view into internal
+     * buffer - copy if persistence needed beyond next operation.
+     */
     std::optional<std::string_view> read_line();
+
+    /**
+     * @brief Check if buffer contains a complete message (empty line)
+     * @return true if an empty line (message boundary) exists
+     */
     bool has_complete_message() const;
 
+    /**
+     * @brief Get current buffer size in bytes
+     * @return Number of bytes stored
+     */
     size_t size() const noexcept { return buffer_.size(); }
+
+    /**
+     * @brief Check if buffer is empty
+     * @return true if no data stored
+     */
     bool empty() const noexcept { return buffer_.empty(); }
+
+    /**
+     * @brief Clear all data and reset read position
+     */
     void clear() noexcept;
+
+    /**
+     * @brief Get view of entire buffer contents
+     * @return string_view of raw buffer data
+     */
     std::string_view view() const { return buffer_; }
 
+    /**
+     * @brief Get maximum buffer size
+     * @return Maximum bytes buffer can hold
+     */
     size_t max_size() const noexcept { return max_size_; }
+
+    /**
+     * @brief Set maximum buffer size
+     * @param max_size New maximum size in bytes
+     */
     void set_max_size(size_t max_size) noexcept { max_size_ = max_size; }
 
 private:
@@ -34,7 +117,19 @@ private:
     size_t read_pos_ = 0;
     size_t max_size_ = 4096;
 
+    /**
+     * @brief Find position of next line ending
+     * @param start Position to start searching from
+     * @return Position of line ending, or npos if not found
+     */
     size_t find_line_end(size_t start) const;
+
+    /**
+     * @brief Compact buffer by removing consumed data
+     *
+     * Moves unread data to beginning of buffer to maximize
+     * available space for new data.
+     */
     void compact();
 };
 
