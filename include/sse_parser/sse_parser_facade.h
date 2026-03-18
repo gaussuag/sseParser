@@ -15,6 +15,9 @@ class SseParser {
 public:
     using MessageCallback = std::function<void(const Message&)>;
 
+    // IFC-01: Function pointer callback for zero overhead
+    using MessageCallbackFn = void(*)(const Message* msg, void* user_data);
+
     SseParser() = default;
 
     explicit SseParser(MessageCallback callback) : callback_(std::move(callback)) {
@@ -52,6 +55,23 @@ public:
     inline void set_callback(MessageCallback callback) {
         callback_ = std::move(callback);
         builder_.set_callback(callback_);
+        fn_callback_ = nullptr;  // Clear function pointer when std::function is set
+        user_data_ = nullptr;
+    }
+
+    // IFC-01: Function pointer callback for zero overhead
+    inline void set_callback(MessageCallbackFn callback, void* user_data) {
+        fn_callback_ = callback;
+        user_data_ = user_data;
+
+        // Wrap function pointer in std::function for MessageBuilder compatibility
+        if (callback) {
+            builder_.set_callback([this](const Message& msg) {
+                fn_callback_(&msg, user_data_);
+            });
+        } else {
+            builder_.set_callback(nullptr);
+        }
     }
 
     // API-04: Flush incomplete message at stream end
@@ -107,6 +127,10 @@ private:
     MessageBuilder builder_;
     MessageCallback callback_;
     std::string last_event_id_;
+
+    // IFC-01: Function pointer callback members
+    MessageCallbackFn fn_callback_ = nullptr;
+    void* user_data_ = nullptr;
 };
 
 }  // namespace sse
