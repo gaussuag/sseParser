@@ -1,0 +1,82 @@
+name: Multi-Compiler Validation
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-gcc:
+    runs-on: ubuntu-latest
+    name: Build with GCC
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Install GCC
+        run: sudo apt-get update && sudo apt-get install -y g++ cmake
+      
+      - name: Configure with strict warnings
+        run: |
+          cmake -B build-gcc \
+            -DCMAKE_CXX_COMPILER=g++ \
+            -DCMAKE_CXX_FLAGS="-Wall -Wextra -Wpedantic -Werror"
+      
+      - name: Build
+        run: cmake --build build-gcc 2>&1 | tee gcc_build.log
+      
+      - name: Check for warnings
+        run: |
+          if grep -i "error\|warning" gcc_build.log | grep -v "^\[.*%\]"; then
+            echo "❌ GCC build has warnings/errors"
+            exit 1
+          fi
+          echo "✅ GCC build clean"
+
+  build-clang:
+    runs-on: ubuntu-latest
+    name: Build with Clang
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Install Clang
+        run: sudo apt-get update && sudo apt-get install -y clang cmake
+      
+      - name: Configure with strict warnings
+        run: |
+          cmake -B build-clang \
+            -DCMAKE_CXX_COMPILER=clang++ \
+            -DCMAKE_CXX_FLAGS="-Wall -Wextra -Wpedantic -Werror"
+      
+      - name: Build
+        run: cmake --build build-clang 2>&1 | tee clang_build.log
+      
+      - name: Check for warnings
+        run: |
+          if grep -i "error\|warning" clang_build.log | grep -v "^\[.*%\]"; then
+            echo "❌ Clang build has warnings/errors"
+            exit 1
+          fi
+          echo "✅ Clang build clean"
+
+  build-msvc:
+    runs-on: windows-latest
+    name: Build with MSVC
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Configure
+        run: cmake -B build-msvc
+      
+      - name: Build with warnings as errors
+        run: |
+          cmake --build build-msvc --config Release 2>&1 | Tee-Object -FilePath msvc_build.log
+          if ($LASTEXITCODE -ne 0) {
+            Write-Host "❌ MSVC build failed"
+            exit 1
+          }
+          if (Select-String -Path msvc_build.log -Pattern "warning|error" -Quiet) {
+            Write-Host "❌ MSVC build has warnings"
+            exit 1
+          }
+          Write-Host "✅ MSVC build clean"
