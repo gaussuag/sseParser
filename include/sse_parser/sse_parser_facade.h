@@ -2,6 +2,7 @@
 
 #include <functional>
 #include <string>
+#include <string_view>
 
 #include "buffer.h"
 #include "error_codes.h"
@@ -40,6 +41,11 @@ public:
         }
 
         return SseError::success;
+    }
+
+    // API-02: Zero-copy string_view interface
+    inline SseError parse(std::string_view data) {
+        return parse(data.data(), data.size());
     }
 
     // API-03: set callback
