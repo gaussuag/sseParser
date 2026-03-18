@@ -51,7 +51,7 @@ See: `.planning/PROJECT.md` (updated 2025-03-17)
 | 2: Core Parsing | ✓ Complete | 4/4 | 100% |
 | 3: Message Assembly | ✓ Complete | 3/3 | 100% |
 | 4: Public API | ✓ Complete | 4/4 | 100% |
-| 5: Polish | ○ Not Started | 0/3 | 0% |
+| 5: Polish | ◆ Planned | 0/3 | 0% |
 
 ---
 
