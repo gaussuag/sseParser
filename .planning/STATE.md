@@ -1,8 +1,8 @@
 # State: SSE Parser
 
-**Current Phase:** 2 - Core Parsing (Ready to Plan)  
+**Current Phase:** 2 - Core Parsing (In Progress)  
 **Last Updated:** 2026-03-18 (Wed)  
-**Overall Progress:** 20% (Phase 1 Complete)
+**Overall Progress:** 25% (Phase 1 Complete, Phase 2 Started)
 
 ---
 
@@ -11,7 +11,7 @@
 See: `.planning/PROJECT.md` (updated 2025-03-17)
 
 **Core value:** Parse any valid SSE stream correctly regardless of network fragmentation  
-**Current focus:** Phase 1 Foundation complete — 53 tests passing. Ready for Phase 2: Core Parsing
+**Current focus:** Phase 2 Core Parsing in progress — Field parser complete (21 tests). Ready for next plan.
 
 ---
 
@@ -20,7 +20,7 @@ See: `.planning/PROJECT.md` (updated 2025-03-17)
 | Phase | Status | Plans Complete | Progress |
 |-------|--------|----------------|----------|
 | 1: Foundation | ✓ Complete | 10/10 | 100% |
-| 2: Core Parsing | ◆ Planned | 0/4 | 0% |
+| 2: Core Parsing | ◆ In Progress | 1/4 | 25% |
 | 3: Message Assembly | ○ Not Started | 0/3 | 0% |
 | 4: Public API | ○ Not Started | 0/4 | 0% |
 | 5: Polish | ○ Not Started | 0/3 | 0% |
@@ -37,10 +37,10 @@ See: `.planning/PROJECT.md` (updated 2025-03-17)
 | ERR-02 | 错误信息字符串 | 1 | ✓ Complete |
 | MSG-01 | Message 结构体 | 1 | ✓ Complete |
 | BUF-01 | 环形缓冲区 | 1 | ✓ Complete |
-| PAR-01 | 字段解析 | 2 | ○ Pending |
-| PAR-02 | 换行符处理 | 2 | ○ Pending |
-| PAR-03 | 前导空格 | 2 | ○ Pending |
-| PAR-04 | 注释跳过 | 2 | ○ Pending |
+| PAR-01 | 字段解析 | 2 | ✓ Complete |
+| PAR-02 | 换行符处理 | 2 | ○ In Progress |
+| PAR-03 | 前导空格 | 2 | ✓ Complete |
+| PAR-04 | 注释跳过 | 2 | ✓ Complete |
 | DAT-01 | 多行 data | 3 | ○ Pending |
 | DAT-02 | 空消息 | 3 | ○ Pending |
 | API-01 | parse(char*,size) | 4 | ○ Pending |
@@ -55,7 +55,7 @@ See: `.planning/PROJECT.md` (updated 2025-03-17)
 
 | ID | Requirement | Phase | Status |
 |----|-------------|-------|--------|
-| VAL-01 | retry 验证 | 2 | ○ Pending |
+| VAL-01 | retry 验证 | 2 | ✓ Complete |
 | ROB-01 | 溢出处理 | 1 | ✓ Complete |
 | IFC-01 | 函数指针回调 | 4 | ○ Pending |
 
@@ -88,15 +88,17 @@ None
 | 2026-03-17 | Unified namespace to `sse` | Changed from `sse_parser` to `sse` for brevity; added backward compatibility alias |
 | 2026-03-17 | Created main header sse_parser.h | Single include point with version macros (1.0.0) and all component includes |
 | 2026-03-18 | Accepted PER-01 deviation | Zero-allocation requirement relaxed to "minimize allocation"; Buffer uses std::string per usability priority decision |
+| 2026-03-18 | Field parser header-only design | Moved implementation to header with inline functions to match project architecture and fix linker errors |
+| 2026-03-18 | Manual retry parsing | Custom integer parsing with overflow detection instead of std::stoi for better control and error handling |
 
 ---
 
 ## Next Actions
 
-1. ✅ Phase 1 Foundation complete — 10/10 plans, 53 tests passing
-2. ✅ All P0 requirements for Phase 1 met (with documented deviation on PER-01)
-3. 🎯 Next: `/gsd-plan-phase 2` — Core Parsing (PAR-01 to PAR-04, VAL-01, EXT-01)
-4. Phase 2 requirements: Field parsing, line endings, retry validation
+1. ✅ Phase 1 Foundation complete — 10/10 plans, 74 tests passing
+2. ✅ Phase 2 Plan 1 complete — Field parser with 21 tests passing
+3. ✅ PAR-01, PAR-03, PAR-04, VAL-01 requirements met
+4. 🎯 Next: Execute 02-02 plan (Line Ending Handler) or 02-03 (Message Builder)
 
 ---
 
