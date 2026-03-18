@@ -162,7 +162,7 @@
 |---|---|-------|------|--------------|-------|--------|
 | 1 | Foundation | Core types & buffer | 6 | 10 | ✓ Complete (2025-03-18) |
 | 2 | Core Parsing | Complete    | 2026-03-18 | 4 | ✓ Complete (2026-03-18) |
-| 3 | Message Assembly | Multi-line handling | 3 | 3 | ▶ In Progress (1/3) |
+| 3 | Message Assembly | Multi-line handling | 3 | 3 | ▶ In Progress (2/3) |
 | 4 | Public API | Facade & callbacks | 6 | 4 | ○ Pending |
 | 5 | Polish | Tests & docs | - | 3 | ○ Pending |
 
@@ -213,4 +213,4 @@ Phases are strictly sequential due to dependencies.
 ---
 
 *Roadmap created: 2025-03-17*  
-*Last updated: 2026-03-18 - Plan 03-01 complete: MessageBuilder class created with DAT-01 (multi-line data) and DAT-02 (empty messages) support*
+*Last updated: 2026-03-18 - Plan 03-03 complete: 25 integration tests covering DAT-01, DAT-02, EXT-02; 169 total tests passing*
