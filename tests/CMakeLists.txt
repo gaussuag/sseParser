@@ -35,6 +35,7 @@ add_executable(sse_parser_tests
     test_line_endings.cpp
     test_field_parser.cpp
     test_integration_p2.cpp
+    test_integration_p3.cpp
 )
 
 target_link_libraries(sse_parser_tests
