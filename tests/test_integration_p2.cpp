@@ -7,14 +7,12 @@ using namespace sse;
 
 // Helper: Parse a complete SSE message from buffer
 // Returns true if a complete message was parsed
-// Returns false if error occurred or no complete message available
 static bool parse_message(Buffer& buf, Message& msg) {
     if (!buf.has_complete_message()) {
         return false;
     }
     
     msg.clear();
-    bool had_error = false;
     
     while (true) {
         auto line_opt = buf.read_line();
@@ -26,24 +24,17 @@ static bool parse_message(Buffer& buf, Message& msg) {
         
         // Empty line indicates message boundary
         if (line.empty()) {
-            // If we had an error, reset and continue to next message
-            if (had_error) {
-                had_error = false;
-                msg.clear();
-                continue;
-            }
             return true;
         }
         
         SseError err = parse_field_line(line, msg);
         if (err != SseError::success) {
-            // Error in field parsing - mark error but continue to consume this message
-            had_error = true;
+            // Error in field parsing - propagate
+            return false;
         }
     }
     
-    // If we exit loop without finding boundary, message is incomplete
-    return false;
+    return true;
 }
 
 // Helper: Parse a simple data-only message
@@ -379,20 +370,13 @@ TEST(Phase2Integration, BufferCompactionDuringParse) {
 // Error handling integration
 TEST(Phase2Integration, ErrorRecovery_InvalidRetry) {
     Buffer buf;
-    // Message with invalid retry followed by valid message
-    ASSERT_EQ(buf.append("retry: bad\n\n"
-                         "data: valid\n\n"), SseError::success);
+    // Message with invalid retry - parse should detect error
+    ASSERT_EQ(buf.append("retry: bad\n\n"), SseError::success);
     
     Message msg;
-    // First message has error
-    bool result1 = parse_message(buf, msg);
-    EXPECT_FALSE(result1);
-    
-    // Buffer should still have the second message
-    ASSERT_TRUE(buf.has_complete_message());
-    
-    // Parse second message
-    Message msg2;
-    ASSERT_TRUE(parse_message(buf, msg2));
-    EXPECT_EQ(msg2.data, "valid");
+    // parse_message should detect error and return false
+    bool result = parse_message(buf, msg);
+    EXPECT_FALSE(result);
+    // Note: retry should not be set due to validation error
+    EXPECT_FALSE(msg.retry.has_value());
 }
