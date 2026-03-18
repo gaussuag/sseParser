@@ -161,7 +161,7 @@
 | # | Phase | Goal | Requirements | Plans | Status |
 |---|---|-------|------|--------------|-------|--------|
 | 1 | Foundation | Core types & buffer | 6 | 10 | ✓ Complete (2025-03-18) |
-| 2 | Core Parsing | Field & line parsing | 6 | 4 | ✓ Complete (2026-03-18) |
+| 2 | Core Parsing | Complete    | 2026-03-18 | 4 | ✓ Complete (2026-03-18) |
 | 3 | Message Assembly | Multi-line handling | 3 | 3 | ○ Pending |
 | 4 | Public API | Facade & callbacks | 6 | 4 | ○ Pending |
 | 5 | Polish | Tests & docs | - | 3 | ○ Pending |
