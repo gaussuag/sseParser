@@ -364,3 +364,38 @@ TEST(FieldParserRetryValidation, OverflowJustUnderLimit) {
     EXPECT_TRUE(msg.retry.has_value());
     EXPECT_EQ(msg.retry.value(), 2147483647);
 }
+
+// EXT-01: UTF-8 BOM detection tests
+TEST(FieldParserBOM, HasBOM_True) {
+    std::string_view data("\xEF\xBB\xBFdata: hello");
+    EXPECT_TRUE(has_bom(data));
+}
+
+TEST(FieldParserBOM, HasBOM_False) {
+    std::string_view data("data: hello");
+    EXPECT_FALSE(has_bom(data));
+}
+
+TEST(FieldParserBOM, HasBOM_TooShort) {
+    std::string_view data("\xEF\xBB");
+    EXPECT_FALSE(has_bom(data));
+}
+
+TEST(FieldParserBOM, HasBOM_Empty) {
+    std::string_view data("");
+    EXPECT_FALSE(has_bom(data));
+}
+
+TEST(FieldParserBOM, SkipBOM_Success) {
+    std::string_view data("\xEF\xBB\xBFdata: hello");
+    bool skipped = skip_bom(data);
+    EXPECT_TRUE(skipped);
+    EXPECT_EQ(data, "data: hello");
+}
+
+TEST(FieldParserBOM, SkipBOM_NoBOM) {
+    std::string_view data("data: hello");
+    bool skipped = skip_bom(data);
+    EXPECT_FALSE(skipped);
+    EXPECT_EQ(data, "data: hello");
+}
