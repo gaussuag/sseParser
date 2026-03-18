@@ -367,7 +367,8 @@ TEST(FieldParserRetryValidation, OverflowJustUnderLimit) {
 
 // EXT-01: UTF-8 BOM detection tests
 TEST(FieldParserBOM, HasBOM_True) {
-    std::string_view data("\xEF\xBB\xBFdata: hello");
+    const unsigned char bom_data[] = {0xEF, 0xBB, 0xBF, 'd', 'a', 't', 'a', ':', ' ', 'h', 'e', 'l', 'l', 'o', 0};
+    std::string_view data(reinterpret_cast<const char*>(bom_data));
     EXPECT_TRUE(has_bom(data));
 }
 
@@ -377,7 +378,8 @@ TEST(FieldParserBOM, HasBOM_False) {
 }
 
 TEST(FieldParserBOM, HasBOM_TooShort) {
-    std::string_view data("\xEF\xBB");
+    const unsigned char short_data[] = {0xEF, 0xBB, 0};
+    std::string_view data(reinterpret_cast<const char*>(short_data));
     EXPECT_FALSE(has_bom(data));
 }
 
@@ -387,7 +389,8 @@ TEST(FieldParserBOM, HasBOM_Empty) {
 }
 
 TEST(FieldParserBOM, SkipBOM_Success) {
-    std::string_view data("\xEF\xBB\xBFdata: hello");
+    const unsigned char bom_data[] = {0xEF, 0xBB, 0xBF, 'd', 'a', 't', 'a', ':', ' ', 'h', 'e', 'l', 'l', 'o', 0};
+    std::string_view data(reinterpret_cast<const char*>(bom_data));
     bool skipped = skip_bom(data);
     EXPECT_TRUE(skipped);
     EXPECT_EQ(data, "data: hello");
