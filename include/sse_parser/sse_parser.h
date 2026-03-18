@@ -11,5 +11,8 @@
 #include "buffer.h"
 #include "field_parser.h"
 
+// Public API facade
+#include "sse_parser_facade.h"
+
 // Convenience namespace alias
 namespace sse_parser = sse;
