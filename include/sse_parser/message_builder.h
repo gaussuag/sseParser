@@ -52,6 +52,16 @@ public:
         current_msg_.clear();
         accumulating_data_ = false;
         // Note: completed_messages_ is NOT cleared - already delivered messages remain
+        // Note: last_event_id_ is NOT cleared - it's cross-message state for reconnection
+    }
+
+    // EXT-02: Last-Event-ID tracking
+    const std::string& last_event_id() const noexcept {
+        return last_event_id_;
+    }
+
+    void clear_last_event_id() noexcept {
+        last_event_id_.clear();
     }
 
 private:
@@ -59,8 +69,14 @@ private:
     MessageCallback callback_;
     std::queue<Message> completed_messages_;
     bool accumulating_data_ = false;
+    std::string last_event_id_;  // EXT-02: Track last event ID for reconnection
 
     void complete_message() {
+        // EXT-02: Track last event ID
+        if (current_msg_.id.has_value()) {
+            last_event_id_ = *current_msg_.id;
+        }
+
         // DAT-02: Even empty messages are delivered
         if (callback_) {
             callback_(current_msg_);
