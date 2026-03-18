@@ -103,4 +103,12 @@ SseError parse_retry_value(std::string_view value, int& result) {
     return SseError::success;
 }
 
+// Validate that retry value is non-negative (0 is valid per SSE spec)
+SseError validate_retry(int value) {
+    if (value < 0) {
+        return SseError::invalid_retry;
+    }
+    return SseError::success;
+}
+
 } // namespace sse
