@@ -2,7 +2,7 @@
 
 **Current Phase:** 2 - Core Parsing (In Progress)  
 **Last Updated:** 2026-03-18 (Wed)  
-**Overall Progress:** 30% (Phase 1 Complete, Phase 2 at 50%)
+**Overall Progress:** 35% (Phase 1 Complete, Phase 2 at 75%)
 
 ---
 
@@ -11,7 +11,7 @@
 See: `.planning/PROJECT.md` (updated 2025-03-17)
 
 **Core value:** Parse any valid SSE stream correctly regardless of network fragmentation  
-**Current focus:** Phase 2 Core Parsing in progress — Line ending tests complete (16 tests, 90 total). Ready for Message Builder.
+**Current focus:** Phase 2 Core Parsing in progress — Field parser tests complete (52 tests, 121 total). Ready for Message Builder.
 
 ---
 
@@ -20,7 +20,7 @@ See: `.planning/PROJECT.md` (updated 2025-03-17)
 | Phase | Status | Plans Complete | Progress |
 |-------|--------|----------------|----------|
 | 1: Foundation | ✓ Complete | 10/10 | 100% |
-| 2: Core Parsing | ◆ In Progress | 2/4 | 50% |
+| 2: Core Parsing | ◆ In Progress | 3/4 | 75% |
 | 3: Message Assembly | ○ Not Started | 0/3 | 0% |
 | 4: Public API | ○ Not Started | 0/4 | 0% |
 | 5: Polish | ○ Not Started | 0/3 | 0% |
@@ -56,6 +56,7 @@ See: `.planning/PROJECT.md` (updated 2025-03-17)
 | ID | Requirement | Phase | Status |
 |----|-------------|-------|--------|
 | VAL-01 | retry 验证 | 2 | ✓ Complete |
+| EXT-01 | UTF-8 BOM 检测 | 2 | ✓ Complete |
 | ROB-01 | 溢出处理 | 1 | ✓ Complete |
 | IFC-01 | 函数指针回调 | 4 | ○ Pending |
 
@@ -91,6 +92,8 @@ None
 | 2026-03-18 | Field parser header-only design | Moved implementation to header with inline functions to match project architecture and fix linker errors |
 | 2026-03-18 | Manual retry parsing | Custom integer parsing with overflow detection instead of std::stoi for better control and error handling |
 | 2026-03-18 | Line ending test expectations | Adjusted 3 test cases to match Buffer's correct implementation behavior (CR and CRLF as valid line endings) |
+| 2026-03-18 | BOM test data format | Used unsigned char arrays for BOM test data to avoid hex escape sequence issues with MSVC |
+| 2026-03-18 | has_bom/skip_bom declaration order | Reordered to avoid forward reference - has_bom must be declared before skip_bom |
 
 ---
 
@@ -99,8 +102,9 @@ None
 1. ✅ Phase 1 Foundation complete — 10/10 plans, 74 tests passing
 2. ✅ Phase 2 Plan 1 complete — Field parser with 21 tests passing
 3. ✅ Phase 2 Plan 2 complete — Line ending handler tests (16 tests, 9 combinations)
-4. ✅ PAR-01, PAR-02, PAR-03, PAR-04, VAL-01 requirements met
-5. 🎯 Next: Execute 02-03 plan (Message Builder) — DAT-01, DAT-02 requirements
+4. ✅ Phase 2 Plan 3 complete — Comments, validation, BOM tests (31 new tests, 52 total)
+5. ✅ PAR-01, PAR-02, PAR-03, PAR-04, VAL-01, EXT-01 requirements met
+6. 🎯 Next: Execute 02-04 plan (Message Builder) — DAT-01, DAT-02 requirements
 
 ---
 
