@@ -1,9 +1,6 @@
+# Original project tests (require curl, etc.)
 add_executable(${PROJECT_NAME}_tests 
     main_test.cpp
-    test_error_codes.cpp
-    test_message.cpp
-    test_buffer.cpp
-    test_integration_p1.cpp
 )
 
 target_link_vcpkg_deps(${PROJECT_NAME}_tests)
@@ -28,3 +25,29 @@ endforeach()
 
 include(GoogleTest)
 gtest_discover_tests(${PROJECT_NAME}_tests)
+
+# SSE Parser tests (header-only, no external deps)
+add_executable(sse_parser_tests
+    test_error_codes.cpp
+    test_message.cpp
+    test_buffer.cpp
+    test_integration_p1.cpp
+)
+
+target_link_libraries(sse_parser_tests
+    PRIVATE
+    gtest_main
+)
+
+target_include_directories(sse_parser_tests
+    PRIVATE
+        ${CMAKE_SOURCE_DIR}/include
+        ${CMAKE_SOURCE_DIR}/include/sse_parser
+)
+
+# Set C++17 standard for SSE parser tests
+target_compile_features(sse_parser_tests PRIVATE cxx_std_17)
+
+# Add tests to CTest
+add_test(NAME sse_parser_unit_tests COMMAND sse_parser_tests)
+gtest_discover_tests(sse_parser_tests)
