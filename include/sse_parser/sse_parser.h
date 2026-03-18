@@ -9,6 +9,7 @@
 #include "error_codes.h"
 #include "message.h"
 #include "buffer.h"
+#include "field_parser.h"
 
 // Convenience namespace alias
 namespace sse_parser = sse;
