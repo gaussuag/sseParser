@@ -3,7 +3,7 @@
   "granularity": "standard",
   "parallelization": true,
   "commit_docs": true,
-  "model_profile": "opencode-go/kimi-k2.5",
+  "model_profile": "inherit",
   "workflow": {
     "research": true,
     "plan_check": true,

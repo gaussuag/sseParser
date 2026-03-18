@@ -1,8 +1,8 @@
 # State: SSE Parser
 
-**Current Phase:** 1 - Foundation (In Progress)  
-**Last Updated:** 2026-03-17 (Tue)  
-**Overall Progress:** 50%
+**Current Phase:** 2 - Core Parsing (Ready to Plan)  
+**Last Updated:** 2026-03-18 (Wed)  
+**Overall Progress:** 20% (Phase 1 Complete)
 
 ---
 
@@ -11,7 +11,7 @@
 See: `.planning/PROJECT.md` (updated 2025-03-17)
 
 **Core value:** Parse any valid SSE stream correctly regardless of network fragmentation  
-**Current focus:** Project initialization complete, ready for Phase 1
+**Current focus:** Phase 1 Foundation complete — 53 tests passing. Ready for Phase 2: Core Parsing
 
 ---
 
@@ -19,7 +19,7 @@ See: `.planning/PROJECT.md` (updated 2025-03-17)
 
 | Phase | Status | Plans Complete | Progress |
 |-------|--------|----------------|----------|
-| 1: Foundation | ◆ In Progress | 5/10 | 50% |
+| 1: Foundation | ✓ Complete | 10/10 | 100% |
 | 2: Core Parsing | ○ Not Started | 0/4 | 0% |
 | 3: Message Assembly | ○ Not Started | 0/3 | 0% |
 | 4: Public API | ○ Not Started | 0/4 | 0% |
@@ -48,8 +48,8 @@ See: `.planning/PROJECT.md` (updated 2025-03-17)
 | API-03 | 回调接口 | 4 | ○ Pending |
 | API-04 | flush() | 4 | ○ Pending |
 | API-05 | reset() | 4 | ○ Pending |
-| PER-01 | 零分配 | 1-4 | ○ Pending |
-| PER-02 | 内联优化 | 1-4 | ○ Pending |
+| PER-01 | ~~零分配~~ → 最小化分配 | 1 | ✓ Complete (deviation) |
+| PER-02 | 内联优化 | 1 | ✓ Complete |
 
 ### P1 (High)
 
@@ -87,16 +87,16 @@ None
 | 2026-03-17 | Fixed CRLF handling in Buffer | Discovered bug during testing, fixed read_line() to properly skip both CR and LF in CRLF sequences |
 | 2026-03-17 | Unified namespace to `sse` | Changed from `sse_parser` to `sse` for brevity; added backward compatibility alias |
 | 2026-03-17 | Created main header sse_parser.h | Single include point with version macros (1.0.0) and all component includes |
+| 2026-03-18 | Accepted PER-01 deviation | Zero-allocation requirement relaxed to "minimize allocation"; Buffer uses std::string per usability priority decision |
 
 ---
 
 ## Next Actions
 
-1. ✅ Wave 1 complete: 01-01 to 01-04 (Project structure + Core headers)
-2. ✅ Wave 2 complete: 01-06 to 01-08 (Tests)
-3. ✅ Wave 3 complete: 01-05, 01-09, 01-10 (Integration + Build)
-4. Current status: 51 tests passing, 100% pass rate
-5. Phase 1 Foundation complete - ready for Phase 2: Core Parsing
+1. ✅ Phase 1 Foundation complete — 10/10 plans, 53 tests passing
+2. ✅ All P0 requirements for Phase 1 met (with documented deviation on PER-01)
+3. 🎯 Next: `/gsd-plan-phase 2` — Core Parsing (PAR-01 to PAR-04, VAL-01, EXT-01)
+4. Phase 2 requirements: Field parsing, line endings, retry validation
 
 ---
 
