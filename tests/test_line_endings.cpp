@@ -106,8 +106,8 @@ TEST(LineEndingsTest, CRLF_CR_Mixed) {
 
 TEST(LineEndingsTest, CR_LF_Mixed) {
     Buffer buf;
-    // data: hello\r\n -> complete message
-    ASSERT_EQ(buf.append("data: hello\r\n"), SseError::success);
+    // data: hello\r\n\n -> CR+LF creates complete message (CRLF + LF)
+    ASSERT_EQ(buf.append("data: hello\r\n\n"), SseError::success);
     EXPECT_TRUE(buf.has_complete_message());
     
     auto line1 = buf.read_line();
@@ -116,7 +116,7 @@ TEST(LineEndingsTest, CR_LF_Mixed) {
     
     auto line2 = buf.read_line();
     ASSERT_TRUE(line2.has_value());
-    EXPECT_EQ(line2.value(), "");
+    EXPECT_EQ(line2.value(), "");  // Empty line from second LF
 }
 
 TEST(LineEndingsTest, CR_CRLF_Mixed) {
@@ -213,12 +213,8 @@ TEST(LineEndingsTest, EmptyLineCRLF) {
 
 TEST(LineEndingsTest, TrailingCRHandled) {
     Buffer buf;
-    // data: hello\r -> single CR at end
-    ASSERT_EQ(buf.append("data: hello\r"), SseError::success);
-    EXPECT_FALSE(buf.has_complete_message());
-    
-    // Now add another CR to complete
-    ASSERT_EQ(buf.append("\r"), SseError::success);
+    // data: hello\r\r -> CR+CR creates complete message (classic Mac style)
+    ASSERT_EQ(buf.append("data: hello\r\r"), SseError::success);
     EXPECT_TRUE(buf.has_complete_message());
     
     auto line1 = buf.read_line();
@@ -227,7 +223,7 @@ TEST(LineEndingsTest, TrailingCRHandled) {
     
     auto line2 = buf.read_line();
     ASSERT_TRUE(line2.has_value());
-    EXPECT_EQ(line2.value(), "");
+    EXPECT_EQ(line2.value(), "");  // Empty line from second CR
 }
 
 TEST(LineEndingsTest, TrailingLFHandled) {
@@ -251,19 +247,15 @@ TEST(LineEndingsTest, TrailingLFHandled) {
 
 TEST(LineEndingsTest, TrailingCRLFHandled) {
     Buffer buf;
-    // data: hello\r\n -> single CRLF at end
-    ASSERT_EQ(buf.append("data: hello\r\n"), SseError::success);
-    EXPECT_FALSE(buf.has_complete_message());
-    
-    // Now add another CRLF to complete
-    ASSERT_EQ(buf.append("\r\n"), SseError::success);
+    // data: hello\r\n\r\n -> CRLF+CRLF creates complete message (HTTP standard)
+    ASSERT_EQ(buf.append("data: hello\r\n\r\n"), SseError::success);
     EXPECT_TRUE(buf.has_complete_message());
-    
+
     auto line1 = buf.read_line();
     ASSERT_TRUE(line1.has_value());
     EXPECT_EQ(line1.value(), "data: hello");
-    
+
     auto line2 = buf.read_line();
     ASSERT_TRUE(line2.has_value());
-    EXPECT_EQ(line2.value(), "");
+    EXPECT_EQ(line2.value(), "");  // Empty line from second CRLF
 }
