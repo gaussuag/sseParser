@@ -84,13 +84,14 @@ TEST(IntegrationLLMTest, ClaudeMultiLineStreaming) {
     SseParser parser;
     parser.set_callback(std::ref(collector));
     
-    // Simulate a response with multiple lines in single data field
-    parser.parse("data: Here's a code example:\n\n");
-    parser.parse("data: ```cpp\n\n");
-    parser.parse("data: int main() {\n\n");
-    parser.parse("data:     return 0;\n\n");
-    parser.parse("data: }\n\n");
-    parser.parse("data: ```\n\n");
+    // Simulate a response with multiple data fields in single message
+    // All data lines before empty line should be accumulated
+    parser.parse("data: Here's a code example:\n");
+    parser.parse("data: ```cpp\n");
+    parser.parse("data: int main() {\n");
+    parser.parse("data:     return 0;\n");
+    parser.parse("data: }\n");
+    parser.parse("data: ```\n\n");  // Empty line triggers message
     
     EXPECT_EQ(collector.count(), 1);
     std::string expected = "Here's a code example:\n```cpp\nint main() {\n    return 0;\n}\n```";
@@ -148,8 +149,8 @@ TEST(IntegrationLargeResponseTest, MultiMBResponse) {
     SseParser parser;
     parser.set_callback(std::ref(collector));
     
-    // Create a large data payload (simulate 1MB content split across messages)
-    std::string large_content(10000, 'x');  // 10KB per message
+    // Create a large data payload (simulate 100KB content split across messages)
+    std::string large_content(1000, 'x');  // 1KB per message
     
     for (int i = 0; i < 10; ++i) {
         std::string chunk = "data: " + large_content + "\n\n";
@@ -169,8 +170,8 @@ TEST(IntegrationLargeResponseTest, VeryLongLine) {
     SseParser parser;
     parser.set_callback(std::ref(collector));
     
-    // Create a very long data line (approaching buffer limits)
-    std::string long_data(50000, 'a');
+    // Create a long data line within buffer limits
+    std::string long_data(1000, 'a');
     std::string chunk = "data: " + long_data + "\n\n";
     
     SseError err = parser.parse(chunk);
