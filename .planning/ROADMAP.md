@@ -163,7 +163,7 @@
 | 1 | Foundation | Core types & buffer | 6 | 10 | ✓ Complete (2025-03-18) |
 | 2 | Core Parsing | Complete    | 2026-03-18 | 4 | ✓ Complete (2026-03-18) |
 | 3 | Message Assembly | Complete | 2026-03-18 | 3 | ✓ Complete (2026-03-18) |
-| 4 | Public API | Facade & callbacks | 6 | 4 | ▶ In Progress (2/4) |
+| 4 | Public API | Facade & callbacks | 6 | 4 | ▶ In Progress (3/4) |
 | 5 | Polish | Tests & docs | - | 3 | ○ Pending |
 
 **Total:** 5 phases | 19 requirements | 24 plans
@@ -213,4 +213,4 @@ Phases are strictly sequential due to dependencies.
 ---
 
 *Roadmap created: 2025-03-17*  
-*Last updated: 2026-03-18 - Plan 04-02 complete: Added parse(string_view) (API-02) and flush() (API-04) for incomplete message handling*
+*Last updated: 2026-03-18 - Plan 04-03 complete: Added reset() method (API-05) and function pointer callback support (IFC-01) for embedded/low-overhead scenarios*

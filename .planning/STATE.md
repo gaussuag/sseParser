@@ -4,7 +4,7 @@ milestone: v1.0
 milestone_name: milestone
 current_phase: 4
 status: unknown
-last_updated: "2026-03-18T04:50:02.397Z"
+last_updated: "2026-03-18T04:56:00.000Z"
 progress:
   total_phases: 5
   completed_phases: 0
@@ -15,8 +15,8 @@ progress:
 # State: SSE Parser
 
 **Current Phase:** 4
-**Last Updated:** 2026-03-18 (Wed) 12:43
-**Overall Progress:** 80% (Phase 1 Complete, Phase 2 Complete, Phase 3 Complete, Phase 4 In Progress - 2/4 plans)
+**Last Updated:** 2026-03-18 (Wed) 12:56
+**Overall Progress:** 85% (Phase 1 Complete, Phase 2 Complete, Phase 3 Complete, Phase 4 In Progress - 3/4 plans)
 
 ---
 
@@ -36,7 +36,7 @@ See: `.planning/PROJECT.md` (updated 2025-03-17)
 | 1: Foundation | ✓ Complete | 10/10 | 100% |
 | 2: Core Parsing | ✓ Complete | 4/4 | 100% |
 | 3: Message Assembly | ✓ Complete | 3/3 | 100% |
-| 4: Public API | ▶ In Progress | 2/4 | 50% |
+| 4: Public API | ▶ In Progress | 3/4 | 75% |
 | 5: Polish | ○ Not Started | 0/3 | 0% |
 
 ---
@@ -61,7 +61,7 @@ See: `.planning/PROJECT.md` (updated 2025-03-17)
 | API-02 | parse(string_view) | 4 | ✓ Complete |
 | API-03 | 回调接口 | 4 | ✓ Complete |
 | API-04 | flush() | 4 | ✓ Complete |
-| API-05 | reset() | 4 | ○ Pending |
+| API-05 | reset() | 4 | ✓ Complete |
 | PER-01 | ~~零分配~~ → 最小化分配 | 1 | ✓ Complete (deviation) |
 | PER-02 | 内联优化 | 1 | ✓ Complete |
 
@@ -72,7 +72,7 @@ See: `.planning/PROJECT.md` (updated 2025-03-17)
 | VAL-01 | retry 验证 | 2 | ✓ Complete |
 | EXT-01 | UTF-8 BOM 检测 | 2 | ✓ Complete |
 | ROB-01 | 溢出处理 | 1 | ✓ Complete |
-| IFC-01 | 函数指针回调 | 4 | ○ Pending |
+| IFC-01 | 函数指针回调 | 4 | ✓ Complete |
 
 ### P2 (Medium)
 
@@ -121,7 +121,8 @@ None
 3. ✅ Phase 3 complete — 3/3 plans, 25 integration tests, 169 total
 4. ✅ Phase 4 Plan 1 complete — SseParser facade with API-01, API-03
 5. ✅ Phase 4 Plan 2 complete — parse(string_view) and flush() (API-02, API-04)
-6. 🎯 Phase 4 Plan 3 next — reset() method (API-05)
+6. ✅ Phase 4 Plan 3 complete — reset() and function pointer callbacks (API-05, IFC-01)
+7. 🎯 Phase 4 Plan 4 next — final Public API plan
 
 ---
 
