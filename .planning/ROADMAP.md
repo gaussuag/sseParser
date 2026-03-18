@@ -159,11 +159,11 @@
 ## Phase Summary
 
 | # | Phase | Goal | Requirements | Plans | Status |
-|---|---|-------|------|--------------|-------|--------|
+|---|-------|------|------|--------------|-------|
 | 1 | Foundation | Core types & buffer | 6 | 10 | ✓ Complete (2025-03-18) |
 | 2 | Core Parsing | Complete    | 2026-03-18 | 4 | ✓ Complete (2026-03-18) | Complete    | 2026-03-18 | Message Assembly | Complete | 2026-03-18 | 3 | ✓ Complete (2026-03-18) |
 | 4 | Public API | Facade & callbacks | 6 | 4 | ✓ Complete (2026-03-18) |
-| 5 | Polish | Tests & docs | - | 3 | ○ Pending |
+| 5 | Polish | Tests & docs | - | 3 | ◆ In Progress (1/3) |
 
 **Total:** 5 phases | 19 requirements | 24 plans
 
@@ -212,4 +212,4 @@ Phases are strictly sequential due to dependencies.
 ---
 
 *Roadmap created: 2025-03-17*  
-*Last updated: 2026-03-18 - Phase 4 complete: Comprehensive integration tests for SseParser (34 test cases, 203 total tests passing)*
+*Last updated: 2026-03-18 - Phase 5 in progress: Fuzzing and performance tests complete (11 fuzzing + 8 performance tests, 222 total tests passing)*
