@@ -79,7 +79,7 @@ Each task was committed atomically:
 5. **Task 5: Add BOM tests** - `a5e982e` (test)
 6. **Fix BOM compilation issues** - `b593593` (fix)
 
-**Plan metadata:** [PENDING - to be committed with SUMMARY.md]
+**Plan metadata:** `cf802ea` (docs)
 
 ## Files Created/Modified
 
