@@ -1,0 +1,27 @@
+
+
+
+data:
+
+data: 
+
+data:test
+
+data:  test
+
+event: custom
+
+id: 123
+
+retry: 5000
+
+: comment
+
+data: line1
+data: line2
+data: line3
+
+event: evt
+id: 456
+retry: 1000
+data: all fields
