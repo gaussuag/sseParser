@@ -113,6 +113,14 @@ inline SseError parse_field_line(std::string_view line, Message& msg) {
     return SseError::success;
 }
 
+// EXT-01: Check if data starts with UTF-8 BOM
+inline bool has_bom(std::string_view data) {
+    return data.size() >= 3 &&
+           static_cast<unsigned char>(data[0]) == 0xEF &&
+           static_cast<unsigned char>(data[1]) == 0xBB &&
+           static_cast<unsigned char>(data[2]) == 0xBF;
+}
+
 // EXT-01: Check and skip UTF-8 BOM
 // Returns: true if BOM was found and skipped, false otherwise
 // If BOM found, the view is advanced past the BOM bytes
@@ -122,14 +130,6 @@ inline bool skip_bom(std::string_view& data) {
         return true;
     }
     return false;
-}
-
-// EXT-01: Check if data starts with UTF-8 BOM
-inline bool has_bom(std::string_view data) {
-    return data.size() >= 3 &&
-           static_cast<unsigned char>(data[0]) == 0xEF &&
-           static_cast<unsigned char>(data[1]) == 0xBB &&
-           static_cast<unsigned char>(data[2]) == 0xBF;
 }
 
 } // namespace sse
