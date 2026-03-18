@@ -35,8 +35,8 @@ See: `.planning/PROJECT.md` (updated 2025-03-17)
 |-------|--------|----------------|----------|
 | 1: Foundation | ✓ Complete | 10/10 | 100% |
 | 2: Core Parsing | ✓ Complete | 4/4 | 100% |
-| 3: Message Assembly | ▶ In Progress | 2/3 | 67% |
-| 4: Public API | ○ Not Started | 0/4 | 0% |
+| 3: Message Assembly | ✓ Complete | 3/3 | 100% |
+| 4: Public API | ◆ Planned | 0/4 | 0% |
 | 5: Polish | ○ Not Started | 0/3 | 0% |
 
 ---
