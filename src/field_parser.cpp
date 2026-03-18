@@ -111,4 +111,22 @@ SseError validate_retry(int value) {
     return SseError::success;
 }
 
+// EXT-01: UTF-8 BOM detection and skipping
+// UTF-8 BOM sequence: \xEF\xBB\xBF
+bool skip_bom(std::string_view& data) {
+    if (has_bom(data)) {
+        data = data.substr(3);  // Skip 3-byte BOM
+        return true;
+    }
+    return false;
+}
+
+bool has_bom(std::string_view data) {
+    static constexpr unsigned char BOM[] = {0xEF, 0xBB, 0xBF};
+    return data.size() >= 3 &&
+           static_cast<unsigned char>(data[0]) == BOM[0] &&
+           static_cast<unsigned char>(data[1]) == BOM[1] &&
+           static_cast<unsigned char>(data[2]) == BOM[2];
+}
+
 } // namespace sse
