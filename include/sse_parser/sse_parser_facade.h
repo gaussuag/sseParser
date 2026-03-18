@@ -85,6 +85,14 @@ public:
         return SseError::success;
     }
 
+    // API-05: Reset all state for reconnection scenarios
+    inline void reset() noexcept {
+        buffer_.clear();           // Clear internal buffer
+        builder_.reset();          // Clear MessageBuilder state
+        last_event_id_.clear();    // Reset last_event_id tracking
+        // Note: callback_ is NOT cleared - keep registered callback
+    }
+
     // Utility accessors
     inline const std::string& last_event_id() const {
         return last_event_id_;
