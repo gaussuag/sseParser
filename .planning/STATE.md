@@ -16,7 +16,7 @@ progress:
 
 **Current Phase:** 4
 **Last Updated:** 2026-03-18 (Wed) 12:43
-**Overall Progress:** 75% (Phase 1 Complete, Phase 2 Complete, Phase 3 Complete, Phase 4 In Progress - 1/4 plans)
+**Overall Progress:** 80% (Phase 1 Complete, Phase 2 Complete, Phase 3 Complete, Phase 4 In Progress - 2/4 plans)
 
 ---
 
@@ -36,7 +36,7 @@ See: `.planning/PROJECT.md` (updated 2025-03-17)
 | 1: Foundation | ✓ Complete | 10/10 | 100% |
 | 2: Core Parsing | ✓ Complete | 4/4 | 100% |
 | 3: Message Assembly | ✓ Complete | 3/3 | 100% |
-| 4: Public API | ▶ In Progress | 1/4 | 25% |
+| 4: Public API | ▶ In Progress | 2/4 | 50% |
 | 5: Polish | ○ Not Started | 0/3 | 0% |
 
 ---
@@ -58,9 +58,9 @@ See: `.planning/PROJECT.md` (updated 2025-03-17)
 | DAT-01 | 多行 data | 3 | ✓ Complete |
 | DAT-02 | 空消息 | 3 | ✓ Complete |
 | API-01 | parse(char*,size) | 4 | ✓ Complete |
-| API-02 | parse(string_view) | 4 | ○ Pending |
+| API-02 | parse(string_view) | 4 | ✓ Complete |
 | API-03 | 回调接口 | 4 | ✓ Complete |
-| API-04 | flush() | 4 | ○ Pending |
+| API-04 | flush() | 4 | ✓ Complete |
 | API-05 | reset() | 4 | ○ Pending |
 | PER-01 | ~~零分配~~ → 最小化分配 | 1 | ✓ Complete (deviation) |
 | PER-02 | 内联优化 | 1 | ✓ Complete |
@@ -120,7 +120,8 @@ None
 2. ✅ Phase 2 complete — 4/4 plans, 144 tests passing
 3. ✅ Phase 3 complete — 3/3 plans, 25 integration tests, 169 total
 4. ✅ Phase 4 Plan 1 complete — SseParser facade with API-01, API-03
-5. 🎯 Phase 4 Plan 2 next — parse(string_view) interface (API-02)
+5. ✅ Phase 4 Plan 2 complete — parse(string_view) and flush() (API-02, API-04)
+6. 🎯 Phase 4 Plan 3 next — reset() method (API-05)
 
 ---
 
