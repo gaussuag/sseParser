@@ -32,6 +32,7 @@ add_executable(sse_parser_tests
     test_message.cpp
     test_buffer.cpp
     test_integration_p1.cpp
+    test_line_endings.cpp
 )
 
 target_link_libraries(sse_parser_tests
