@@ -2,7 +2,7 @@
 
 **Current Phase:** 2 - Core Parsing (In Progress)  
 **Last Updated:** 2026-03-18 (Wed)  
-**Overall Progress:** 25% (Phase 1 Complete, Phase 2 Started)
+**Overall Progress:** 30% (Phase 1 Complete, Phase 2 at 50%)
 
 ---
 
@@ -11,7 +11,7 @@
 See: `.planning/PROJECT.md` (updated 2025-03-17)
 
 **Core value:** Parse any valid SSE stream correctly regardless of network fragmentation  
-**Current focus:** Phase 2 Core Parsing in progress — Field parser complete (21 tests). Ready for next plan.
+**Current focus:** Phase 2 Core Parsing in progress — Line ending tests complete (16 tests, 90 total). Ready for Message Builder.
 
 ---
 
@@ -20,7 +20,7 @@ See: `.planning/PROJECT.md` (updated 2025-03-17)
 | Phase | Status | Plans Complete | Progress |
 |-------|--------|----------------|----------|
 | 1: Foundation | ✓ Complete | 10/10 | 100% |
-| 2: Core Parsing | ◆ In Progress | 1/4 | 25% |
+| 2: Core Parsing | ◆ In Progress | 2/4 | 50% |
 | 3: Message Assembly | ○ Not Started | 0/3 | 0% |
 | 4: Public API | ○ Not Started | 0/4 | 0% |
 | 5: Polish | ○ Not Started | 0/3 | 0% |
@@ -38,7 +38,7 @@ See: `.planning/PROJECT.md` (updated 2025-03-17)
 | MSG-01 | Message 结构体 | 1 | ✓ Complete |
 | BUF-01 | 环形缓冲区 | 1 | ✓ Complete |
 | PAR-01 | 字段解析 | 2 | ✓ Complete |
-| PAR-02 | 换行符处理 | 2 | ○ In Progress |
+| PAR-02 | 换行符处理 | 2 | ✓ Complete |
 | PAR-03 | 前导空格 | 2 | ✓ Complete |
 | PAR-04 | 注释跳过 | 2 | ✓ Complete |
 | DAT-01 | 多行 data | 3 | ○ Pending |
@@ -90,6 +90,7 @@ None
 | 2026-03-18 | Accepted PER-01 deviation | Zero-allocation requirement relaxed to "minimize allocation"; Buffer uses std::string per usability priority decision |
 | 2026-03-18 | Field parser header-only design | Moved implementation to header with inline functions to match project architecture and fix linker errors |
 | 2026-03-18 | Manual retry parsing | Custom integer parsing with overflow detection instead of std::stoi for better control and error handling |
+| 2026-03-18 | Line ending test expectations | Adjusted 3 test cases to match Buffer's correct implementation behavior (CR and CRLF as valid line endings) |
 
 ---
 
@@ -97,8 +98,9 @@ None
 
 1. ✅ Phase 1 Foundation complete — 10/10 plans, 74 tests passing
 2. ✅ Phase 2 Plan 1 complete — Field parser with 21 tests passing
-3. ✅ PAR-01, PAR-03, PAR-04, VAL-01 requirements met
-4. 🎯 Next: Execute 02-02 plan (Line Ending Handler) or 02-03 (Message Builder)
+3. ✅ Phase 2 Plan 2 complete — Line ending handler tests (16 tests, 9 combinations)
+4. ✅ PAR-01, PAR-02, PAR-03, PAR-04, VAL-01 requirements met
+5. 🎯 Next: Execute 02-03 plan (Message Builder) — DAT-01, DAT-02 requirements
 
 ---
 
