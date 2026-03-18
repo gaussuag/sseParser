@@ -166,3 +166,201 @@ TEST(FieldParserTest, MultipleFieldsAccumulate) {
     EXPECT_TRUE(msg.id.has_value());
     EXPECT_EQ(msg.id.value(), "myid");
 }
+
+// PAR-03: Comprehensive leading space tests
+TEST(FieldParserLeadingSpace, SingleSpaceRemoved) {
+    Message msg;
+    SseError err = parse_field_line("data: hello", msg);
+    EXPECT_EQ(err, SseError::success);
+    EXPECT_EQ(msg.data, "hello");
+}
+
+TEST(FieldParserLeadingSpace, SingleSpaceOnlyOneRemoved) {
+    Message msg;
+    SseError err = parse_field_line("data: hello world", msg);
+    EXPECT_EQ(err, SseError::success);
+    EXPECT_EQ(msg.data, "hello world");  // Only first space after colon removed
+}
+
+TEST(FieldParserLeadingSpace, MultipleSpacesKeepRest) {
+    Message msg;
+    SseError err = parse_field_line("data:   hello", msg);
+    EXPECT_EQ(err, SseError::success);
+    EXPECT_EQ(msg.data, "  hello");  // First space removed, two kept
+}
+
+TEST(FieldParserLeadingSpace, TabNotRemoved) {
+    Message msg;
+    SseError err = parse_field_line("data:\thello", msg);
+    EXPECT_EQ(err, SseError::success);
+    EXPECT_EQ(msg.data, "\thello");  // Tab is not a space, kept as-is
+}
+
+TEST(FieldParserLeadingSpace, AppliesToAllFields) {
+    Message msg;
+    
+    // Event field
+    EXPECT_EQ(parse_field_line("event: myevent", msg), SseError::success);
+    EXPECT_EQ(msg.event, "myevent");
+    
+    msg.clear();
+    
+    // ID field
+    EXPECT_EQ(parse_field_line("id: myid", msg), SseError::success);
+    EXPECT_TRUE(msg.id.has_value());
+    EXPECT_EQ(msg.id.value(), "myid");
+    
+    msg.clear();
+    
+    // Retry field (whitespace trimming happens in parse_retry_value)
+    EXPECT_EQ(parse_field_line("retry: 5000", msg), SseError::success);
+    EXPECT_TRUE(msg.retry.has_value());
+    EXPECT_EQ(msg.retry.value(), 5000);
+}
+
+// PAR-04: Comprehensive comment tests
+TEST(FieldParserComment, SimpleCommentSkipped) {
+    Message msg;
+    msg.event = "original";
+    SseError err = parse_field_line(": this is a comment", msg);
+    EXPECT_EQ(err, SseError::success);
+    EXPECT_EQ(msg.event, "original");
+}
+
+TEST(FieldParserComment, EmptyCommentLine) {
+    Message msg;
+    msg.event = "original";
+    SseError err = parse_field_line(":", msg);
+    EXPECT_EQ(err, SseError::success);
+    EXPECT_EQ(msg.event, "original");
+}
+
+TEST(FieldParserComment, CommentWithColon) {
+    Message msg;
+    msg.event = "original";
+    SseError err = parse_field_line(": comment: with colon", msg);
+    EXPECT_EQ(err, SseError::success);
+    EXPECT_EQ(msg.event, "original");
+}
+
+TEST(FieldParserComment, CommentWithFieldLikeContent) {
+    Message msg;
+    msg.event = "original";
+    SseError err = parse_field_line(": data: fake field", msg);
+    EXPECT_EQ(err, SseError::success);
+    EXPECT_EQ(msg.event, "original");
+    EXPECT_TRUE(msg.data.empty());
+}
+
+TEST(FieldParserComment, CommentAfterField) {
+    // Parse a field first, then comment
+    Message msg;
+    EXPECT_EQ(parse_field_line("event: myevent", msg), SseError::success);
+    EXPECT_EQ(msg.event, "myevent");
+    
+    EXPECT_EQ(parse_field_line(": this is a comment", msg), SseError::success);
+    EXPECT_EQ(msg.event, "myevent");  // Unchanged
+}
+
+// VAL-01: Comprehensive retry validation tests
+TEST(FieldParserRetryValidation, ValidSmall) {
+    Message msg;
+    SseError err = parse_field_line("retry: 1", msg);
+    EXPECT_EQ(err, SseError::success);
+    EXPECT_TRUE(msg.retry.has_value());
+    EXPECT_EQ(msg.retry.value(), 1);
+}
+
+TEST(FieldParserRetryValidation, ValidZero) {
+    Message msg;
+    SseError err = parse_field_line("retry: 0", msg);
+    EXPECT_EQ(err, SseError::success);
+    EXPECT_TRUE(msg.retry.has_value());
+    EXPECT_EQ(msg.retry.value(), 0);
+}
+
+TEST(FieldParserRetryValidation, ValidWithLeadingZeros) {
+    Message msg;
+    SseError err = parse_field_line("retry: 0005000", msg);
+    EXPECT_EQ(err, SseError::success);
+    EXPECT_TRUE(msg.retry.has_value());
+    EXPECT_EQ(msg.retry.value(), 5000);
+}
+
+TEST(FieldParserRetryValidation, ValidWithWhitespace) {
+    Message msg;
+    SseError err = parse_field_line("retry:  5000  ", msg);
+    EXPECT_EQ(err, SseError::success);
+    EXPECT_TRUE(msg.retry.has_value());
+    EXPECT_EQ(msg.retry.value(), 5000);
+}
+
+TEST(FieldParserRetryValidation, InvalidEmpty) {
+    Message msg;
+    SseError err = parse_field_line("retry:", msg);
+    EXPECT_EQ(err, SseError::invalid_retry);
+}
+
+TEST(FieldParserRetryValidation, InvalidWhitespaceOnly) {
+    Message msg;
+    SseError err = parse_field_line("retry:   ", msg);
+    EXPECT_EQ(err, SseError::invalid_retry);
+}
+
+TEST(FieldParserRetryValidation, InvalidNegative) {
+    Message msg;
+    SseError err = parse_field_line("retry: -1", msg);
+    EXPECT_EQ(err, SseError::invalid_retry);
+}
+
+TEST(FieldParserRetryValidation, InvalidNegativeLarge) {
+    Message msg;
+    SseError err = parse_field_line("retry: -999999", msg);
+    EXPECT_EQ(err, SseError::invalid_retry);
+}
+
+TEST(FieldParserRetryValidation, InvalidNonNumeric) {
+    Message msg;
+    SseError err = parse_field_line("retry: abc", msg);
+    EXPECT_EQ(err, SseError::invalid_retry);
+}
+
+TEST(FieldParserRetryValidation, InvalidMixed) {
+    Message msg;
+    SseError err = parse_field_line("retry: 123abc", msg);
+    EXPECT_EQ(err, SseError::invalid_retry);
+}
+
+TEST(FieldParserRetryValidation, InvalidDecimal) {
+    Message msg;
+    SseError err = parse_field_line("retry: 123.45", msg);
+    EXPECT_EQ(err, SseError::invalid_retry);
+}
+
+TEST(FieldParserRetryValidation, InvalidHex) {
+    Message msg;
+    SseError err = parse_field_line("retry: 0xFF", msg);
+    EXPECT_EQ(err, SseError::invalid_retry);
+}
+
+TEST(FieldParserRetryValidation, OverflowMaxInt) {
+    Message msg;
+    // INT_MAX + 1 should overflow
+    SseError err = parse_field_line("retry: 2147483648", msg);
+    EXPECT_EQ(err, SseError::invalid_retry);
+}
+
+TEST(FieldParserRetryValidation, OverflowLargeNumber) {
+    Message msg;
+    SseError err = parse_field_line("retry: 999999999999999999999", msg);
+    EXPECT_EQ(err, SseError::invalid_retry);
+}
+
+TEST(FieldParserRetryValidation, OverflowJustUnderLimit) {
+    Message msg;
+    // INT_MAX (typically 2147483647) should be valid
+    SseError err = parse_field_line("retry: 2147483647", msg);
+    EXPECT_EQ(err, SseError::success);
+    EXPECT_TRUE(msg.retry.has_value());
+    EXPECT_EQ(msg.retry.value(), 2147483647);
+}
