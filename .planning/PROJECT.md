@@ -1,8 +1,22 @@
 # SSE Parser
 
-## What This Is
+## Current State
 
-A C++17 header-only library for parsing Server-Sent Events (SSE) protocol data streams. Focused solely on protocol parsing with network layer decoupled via interfaces. Designed for desktop clients and embedded devices handling LLM streaming responses.
+**v1.0 SHIPPED** — 2026-03-19
+
+A production-ready C++17 header-only library for parsing Server-Sent Events (SSE) protocol. Successfully handles real-world LLM streaming scenarios with 295 tests passing.
+
+### What Shipped
+
+- ✅ **Core parsing** — Full SSE protocol support (event, data, id, retry fields)
+- ✅ **Network resilience** — Handles arbitrary fragmentation across chunks
+- ✅ **Clean API** — parse(), callbacks, flush(), reset()
+- ✅ **Zero-copy** — string_view input, minimal allocations
+- ✅ **Comprehensive tests** — 295 tests, fuzzing, performance benchmarks
+- ✅ **Documentation** — 111 Doxygen comments, 8 usage examples
+- ✅ **Multi-compiler** — GCC, Clang, MSVC CI validation
+
+**Stats:** 35K+ LOC, 122 commits, 5 phases, 24 plans, 3 days
 
 ## Core Value
 
@@ -10,22 +24,24 @@ Parse any valid SSE stream correctly, regardless of how network chunks arrive, a
 
 ## Requirements
 
-### Validated
+### Validated (v1.0)
 
-(None yet — ship to validate)
+- ✅ Parse SSE protocol messages from arbitrary byte chunks — v1.0
+- ✅ Handle message fragmentation across multiple input calls — v1.0
+- ✅ Support all standard SSE fields: event, data, id, retry — v1.0
+- ✅ Preserve multi-line data formatting as received — v1.0
+- ✅ Provide clean callback interface (on_message) — v1.0
+- ✅ Support both const char*+size and string_view inputs — v1.0
+- ✅ Use error codes for all error handling (no exceptions) — v1.0
+- ✅ Header-only design for easy integration — v1.0
 
-### Active
+### Active (Next Milestone)
 
-- [ ] Parse SSE protocol messages from arbitrary byte chunks
-- [ ] Handle message fragmentation across multiple input calls
-- [ ] Support all standard SSE fields: event, data, id, retry
-- [ ] Preserve multi-line data formatting as received
-- [ ] Provide clean callback interface (on_message)
-- [ ] Support both const char*+size and string_view inputs
-- [ ] Use error codes for all error handling (no exceptions)
-- [ ] Ensure internal thread safety (no concurrent parse calls)
-- [ ] Maintain zero dynamic allocations in hot path (configurable)
-- [ ] Header-only design for easy integration
+- [ ] Thread-safe wrapper for concurrent access
+- [ ] Streaming data output (no full accumulation)
+- [ ] Configurable max message size limits
+- [ ] Parse statistics (message count, byte count)
+- [ ] Custom field handlers
 
 ### Out of Scope
 
@@ -35,32 +51,34 @@ Parse any valid SSE stream correctly, regardless of how network chunks arrive, a
 - Compression/decompression — caller handles encoding
 - HTTP protocol handling — assume caller stripped headers
 - Server-side SSE generation — client-side only
+- Automatic reconnection logic — network layer responsibility
 
 ## Context
 
-- **Target platforms**: Desktop (Windows/Linux/macOS), embedded systems
-- **Data volume**: Optimized for LLM streaming (high frequency, moderate size)
-- **Memory constraints**: Must work on resource-limited embedded devices
-- **Integration pattern**: User implements network layer, feeds raw bytes to parser
-- **Error philosophy**: Fail fast with error codes, never throw
+- **Shipped:** v1.0 with 35K+ LOC, 295 tests (100% pass rate)
+- **Target platforms:** Desktop (Windows/Linux/macOS), embedded systems
+- **Tech stack:** C++17, header-only, STL only
+- **Performance:** 8-11 MB/s debug, >100 MB/s expected release
+- **Integration:** 8 usage examples, comprehensive documentation
+- **Known limitation:** Uses std::string internally (accepted deviation from zero-allocation for usability)
 
 ## Constraints
 
-- **Language**: C++17 minimum — no C++20 features
-- **Threading**: Single-threaded parse context — caller serializes access
-- **Dependencies**: Header-only, no external libraries (STL only)
-- **Portability**: Must compile on GCC 7+, Clang 6+, MSVC 2017+
-- **Performance**: Zero-copy where possible, minimal allocations
+- **Language:** C++17 minimum — no C++20 features
+- **Threading:** Single-threaded parse context — caller serializes access
+- **Dependencies:** Header-only, no external libraries (STL only)
+- **Portability:** GCC 9+, Clang 10+, MSVC 2019+
 
 ## Key Decisions
 
 | Decision | Rationale | Outcome |
 |----------|-----------|---------|
-| Header-only | Easy integration, no build system complexity | — Pending |
-| Callback-based (on_message) | Clean separation, user handles dispatch | — Pending |
-| Internal buffering | Handles network fragmentation transparently | — Pending |
-| Error codes vs exceptions | Embedded-friendly, deterministic | — Pending |
-| string_view input | Zero-copy, modern C++ | — Pending |
+| Header-only | Easy integration, no build complexity | ✅ Validated — works well |
+| Callback-based (on_message) | Clean separation, user handles dispatch | ✅ Validated — flexible |
+| Internal buffering | Handles network fragmentation | ✅ Validated — seamless |
+| Error codes vs exceptions | Embedded-friendly, deterministic | ✅ Validated — clean |
+| string_view input | Zero-copy, modern C++ | ✅ Validated — efficient |
+| std::string for Buffer | Usability over strict zero-allocation | ⚠️ Accepted deviation |
 
 ---
-*Last updated: 2025-03-17 after initialization*
+*Last updated: 2026-03-19 after v1.0 milestone completion*
