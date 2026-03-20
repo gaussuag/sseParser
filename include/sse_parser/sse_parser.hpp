@@ -15,6 +15,16 @@
 #define SSE_PARSER_VERSION_MINOR 0
 #define SSE_PARSER_VERSION_PATCH 0
 
+#include <cstddef>
+#include <cstdint>
+#include <cctype>
+#include <climits>
+#include <functional>
+#include <optional>
+#include <queue>
+#include <string>
+#include <string_view>
+
 #pragma region Error Codes
 /**
  * @file error_codes.h
@@ -24,8 +34,6 @@
  * Defines SseError enum and error message conversion.
  * All errors are reported via return codes (no exceptions).
  */
-
-#include <cstdint>
 
 namespace sse {
 
@@ -102,9 +110,6 @@ inline bool operator!(SseError e) noexcept {
  * with all standard fields per W3C spec.
  */
 
-#include <optional>
-#include <string>
-
 namespace sse {
 
 /**
@@ -170,12 +175,6 @@ struct Message {
  * Provides line-based reading with automatic compaction.
  * Supports configurable max size with overflow protection.
  */
-
-#include <cstddef>
-#include <cstdint>
-#include <optional>
-#include <string>
-#include <string_view>
 
 namespace sse {
 
@@ -415,11 +414,6 @@ inline void Buffer::compact() {
  * - UTF-8 BOM detection
  */
 
-#include <optional>
-#include <string_view>
-#include <climits>
-#include <cctype>
-
 namespace sse {
 
 /**
@@ -605,11 +599,6 @@ inline bool skip_bom(std::string_view& data) {
  * Accumulates field lines into complete messages.
  * Handles multi-line data accumulation and Last-Event-ID tracking.
  */
-
-#include <functional>
-#include <optional>
-#include <queue>
-#include <string_view>
 
 namespace sse {
 
@@ -838,10 +827,6 @@ private:
  * parser.flush();
  * @endcode
  */
-
-#include <functional>
-#include <string>
-#include <string_view>
 
 namespace sse {
 
