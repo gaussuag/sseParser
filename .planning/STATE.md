@@ -63,7 +63,7 @@ None
 |------|----------|---------|
 | 2026-03-20 | v2.0 single header | User requested header consolidation |
 | 2026-03-20 | API-breaking release | v2.0 for simplified include experience |
-| 2026-03-20 | Phase 9 re-planned | Implement forwarding headers with deprecation warnings |
+| 2026-03-20 | Phase 9 final | Delete old headers - users migrate to sse_parser.hpp |
 
 ---
 
@@ -72,7 +72,7 @@ None
 1. ● Phase 6: Header Consolidation — Complete (sse_parser.hpp created)
 2. ● Phase 7: API Export Verification — Complete (all 298 tests pass with single header)
 3. ● Phase 8: Compilation Optimization — Complete (includes consolidated, 298 tests pass)
-4. ▶ Phase 9: Backward Compatibility — Implement forwarding headers with deprecation warnings
+4. ▶ Phase 9: Backward Compatibility — Delete old headers, users migrate to sse_parser.hpp
 5. ○ Phase 10: Documentation Update — Update README, migration guide, CHANGELOG
 
 ---

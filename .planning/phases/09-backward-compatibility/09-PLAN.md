@@ -1,97 +1,95 @@
-# Phase 9: Backward Compatibility
+# Phase 9: Backward Compatibility — DELETE OLD HEADERS
 
 **Phase:** 09 | **Milestone:** v2.0 Single Header Integration
 
-## Overview
+## Decision
 
-Implement backward compatibility by creating forwarding header files that:
-1. Include the new `sse_parser.hpp`
-2. Emit deprecation warnings to inform users to migrate
+**删除旧头文件，用户使用新单文件 `sse_parser.hpp`**
 
-## Requirements
+v2.0 是 API breaking change，用户需要更新 include 路径。
 
-| ID | Requirement |
-|----|------------|
-| BCMP-01 | Legacy `sse_parser/buffer.h` still works |
-| BCMP-02 | Legacy `sse_parser/message.h` still works |
-| BCMP-03 | Legacy `sse_parser/field_parser.h` still works |
-| BCMP-04 | Legacy `sse_parser/sse_parser_facade.h` still works |
-| BCMP-05 | Deprecation warnings added to legacy include paths |
+## Files to Delete
 
-## Implementation Strategy
-
-Each legacy header file will be replaced with a minimal forwarding header:
-
-```cpp
-/**
- * @file buffer.h
- * @deprecated Use sse_parser.hpp instead. This header will be removed in v3.0.
- * Include sse_parser/sse_parser.hpp for the complete API.
- */
-#pragma once
-
-#ifdef __GNUC__
-#pragma GCC warning "buffer.h is deprecated. Include sse_parser/sse_parser.hpp instead."
-#elif defined(_MSC_VER)
-#pragma message("buffer.h is deprecated. Include sse_parser/sse_parser.hpp instead.")
-#endif
-
-#include "sse_parser.hpp"
-```
+| File | Reason |
+|------|--------|
+| `include/sse_parser/error_codes.h` | 合并到 sse_parser.hpp |
+| `include/sse_parser/message.h` | 合并到 sse_parser.hpp |
+| `include/sse_parser/buffer.h` | 合并到 sse_parser.hpp |
+| `include/sse_parser/field_parser.h` | 合并到 sse_parser.hpp |
+| `include/sse_parser/message_builder.h` | 合并到 sse_parser.hpp |
+| `include/sse_parser/sse_parser_facade.h` | 合并到 sse_parser.hpp |
+| `include/sse_parser/sse_parser.h` | 旧的入口，替换为 sse_parser.hpp |
 
 ## Tasks
 
-### Task 9.1: Create Forwarding Headers
-
-Create forwarding headers for each legacy include:
-
-1. `include/sse_parser/buffer.h` → forwards to `sse_parser.hpp`
-2. `include/sse_parser/message.h` → forwards to `sse_parser.hpp`
-3. `include/sse_parser/field_parser.h` → forwards to `sse_parser.hpp`
-4. `include/sse_parser/message_builder.h` → forwards to `sse_parser.hpp`
-5. `include/sse_parser/sse_parser_facade.h` → forwards to `sse_parser.hpp`
-6. `include/sse_parser/error_codes.h` → forwards to `sse_parser.hpp`
-
-### Task 9.2: Verify Compilation
-
-Test that legacy includes still compile:
-
-```cpp
-// Test each legacy include
-#include "sse_parser/buffer.h"      // Should compile with warning
-#include "sse_parser/message.h"     // Should compile with warning
-#include "sse_parser/field_parser.h" // Should compile with warning
-```
-
-### Task 9.3: Run Test Suite
-
-Ensure all 298+ tests still pass with legacy includes.
-
-## Files to Create/Modify
-
-- `include/sse_parser/buffer.h` — Replace with forwarding header
-- `include/sse_parser/message.h` — Replace with forwarding header
-- `include/sse_parser/field_parser.h` — Replace with forwarding header
-- `include/sse_parser/message_builder.h` — Replace with forwarding header
-- `include/sse_parser/sse_parser_facade.h` — Replace with forwarding header
-- `include/sse_parser/error_codes.h` — Replace with forwarding header
-
-## Verification
+### Task 9.1: Delete Old Header Files
 
 ```bash
-# Build tests with legacy includes
+rm include/sse_parser/error_codes.h
+rm include/sse_parser/message.h
+rm include/sse_parser/buffer.h
+rm include/sse_parser/field_parser.h
+rm include/sse_parser/message_builder.h
+rm include/sse_parser/sse_parser_facade.h
+rm include/sse_parser/sse_parser.h
+```
+
+### Task 9.2: Verify Only New Header Remains
+
+```bash
+ls include/sse_parser/
+# Should show only: sse_parser.hpp
+```
+
+### Task 9.3: Update Test Includes
+
+Update all test and example files to use new header:
+
+```cpp
+// Old (v1.0)
+#include "sse_parser/sse_parser.h"
+#include "sse_parser/buffer.h"
+
+// New (v2.0)
+#include "sse_parser/sse_parser.hpp"
+```
+
+### Task 9.4: Run Full Test Suite
+
+```bash
 cd build
 cmake --build . --config Release
 ctest -C Release --output-on-failure
 ```
 
-## Notes
+## v2.0 Migration Guide
 
-- The old header files cannot be completely deleted for backward compatibility
-- Deprecation warnings help users migrate to the new single-header approach
-- v3.0 can consider removing these forwarding headers entirely
+Users upgrading from v1.x to v2.0:
+
+**Before:**
+```cpp
+#include "sse_parser/sse_parser.h"
+#include "sse_parser/buffer.h"  // if used directly
+```
+
+**After:**
+```cpp
+#include "sse_parser/sse_parser.hpp"
+```
+
+## Files Modified
+
+- `include/sse_parser/*.h` — Deleted (7 files)
+- `tests/*.cpp` — Update include paths
+- `examples/*.cpp` — Update include paths
+
+## Verification
+
+- [ ] Only `sse_parser.hpp` remains in `include/sse_parser/`
+- [ ] All tests compile and pass
+- [ ] No references to old header files remain
 
 ---
 
 *Phase: 09-backward-compatibility*
-*Plan: Full implementation (2026-03-20)*
+*Plan: Delete old headers (2026-03-20)*
