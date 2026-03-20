@@ -76,21 +76,21 @@
 
 ### Phase 9: Backward Compatibility
 
-**Goal:** Maintain legacy include paths with deprecation warnings
+**Goal:** Delete legacy include paths for v2.0 API-breaking change
 
 **Requirements:**
-- BCMP-01: Legacy include path `sse_parser/buffer.h` still works
-- BCMP-02: Legacy include path `sse_parser/message.h` still works
-- BCMP-03: Legacy include path `sse_parser/field_parser.h` still works
-- BCMP-04: Legacy include path `sse_parser/sse_parser_facade.h` still works
-- BCMP-05: Deprecation warnings added to legacy include paths
+- BCMP-01: Delete `sse_parser/buffer.h` (merged into sse_parser.hpp)
+- BCMP-02: Delete `sse_parser/message.h` (merged into sse_parser.hpp)
+- BCMP-03: Delete `sse_parser/field_parser.h` (merged into sse_parser.hpp)
+- BCMP-04: Delete `sse_parser/sse_parser_facade.h` (merged into sse_parser.hpp)
+- BCMP-05: Delete `sse_parser/sse_parser.h` (replaced by sse_parser.hpp)
 
 **Success Criteria:**
-1. Old `#include "sse_parser/buffer.h"` compiles with deprecation warning
-2. Old `#include "sse_parser/message.h"` compiles with deprecation warning
-3. Old `#include "sse_parser/field_parser.h"` compiles with deprecation warning
-4. Old `#include "sse_parser/sse_parser_facade.h"` compiles with deprecation warning
-5. Users can migrate incrementally using legacy includes
+1. Only `sse_parser.hpp` remains in `include/sse_parser/`
+2. All tests compile and pass with single header
+3. No references to old headers remain
+
+**Status:** ● Complete (2026-03-20) - Deleted 7 old headers, all 298 tests pass
 
 ---
 
