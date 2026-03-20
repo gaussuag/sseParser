@@ -9,7 +9,7 @@
 #include <iostream>
 #include <sstream>
 #include <vector>
-#include "../include/sse_parser/sse_parser.h"
+#include "../include/sse_parser/sse_parser.hpp"
 
 // Example 1: Basic usage with callback
 // Demonstrates simplest use case - parse SSE stream with callback
