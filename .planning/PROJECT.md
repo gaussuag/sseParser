@@ -7,28 +7,30 @@
 **Phase 7 (API Export Verification) Complete** — 2026-03-20
 **Phase 8 (Compilation Optimization) Complete** — 2026-03-20
 **Phase 9 (Backward Compatibility) Complete** — 2026-03-20
+**Phase 10 (Documentation Update) Complete** — 2026-03-20
 
-A production-ready C++17 header-only library for parsing Server-Sent Events (SSE) protocol. Successfully handles real-world LLM streaming scenarios with 295 tests passing.
+A production-ready C++17 header-only library for parsing Server-Sent Events (SSE) protocol. Successfully handles real-world LLM streaming scenarios with 298 tests passing.
 
-### What Shipped
+### What Shipped (v2.0)
 
+- ✅ **Single header** — `#include "sse_parser/sse_parser.hpp"` only
 - ✅ **Core parsing** — Full SSE protocol support (event, data, id, retry fields)
 - ✅ **Network resilience** — Handles arbitrary fragmentation across chunks
 - ✅ **Clean API** — parse(), callbacks, flush(), reset()
 - ✅ **Zero-copy** — string_view input, minimal allocations
-- ✅ **Comprehensive tests** — 295 tests, fuzzing, performance benchmarks
-- ✅ **Documentation** — 111 Doxygen comments, 8 usage examples
+- ✅ **Comprehensive tests** — 298 tests, fuzzing, performance benchmarks
+- ✅ **Documentation** — Doxygen comments, README, CHANGELOG, migration guide
 - ✅ **Multi-compiler** — GCC, Clang, MSVC CI validation
 
-**Stats:** 35K+ LOC, 122 commits, 5 phases, 24 plans, 3 days
+**Stats:** 35K+ LOC, 140+ commits, 10 phases, 5-day v2.0 milestone
 
 ## Core Value
 
 Parse any valid SSE stream correctly, regardless of how network chunks arrive, and deliver complete, well-formed messages to the caller via clean callbacks.
 
-## Current Milestone: v2.0 Single Header Integration
+## Current Milestone: v2.0 Single Header Integration ✅ COMPLETE
 
-**Goal:** Merge all header files into a single include for simplified user integration ✅ COMPLETE
+**Goal:** Merge all header files into a single include for simplified user integration — ACHIEVED
 
 **Target features:**
 - Single `sse_parser.h` header with complete functionality
@@ -63,7 +65,7 @@ Parse any valid SSE stream correctly, regardless of how network chunks arrive, a
 | Error codes vs exceptions | Embedded-friendly, deterministic | ✅ Validated — clean |
 | string_view input | Zero-copy, modern C++ | ✅ Validated — efficient |
 | std::string for Buffer | Usability over strict zero-allocation | ⚠️ Accepted deviation |
-| v2.0 Single Header | Simplified user include experience | ✅ Validated — Phase 09 complete, old headers deleted, v2.0 migration done |
+| v2.0 Single Header | Simplified user include experience | ✅ Validated — Phase 10 complete, README/CHANGELOG updated, v2.0 ready to ship |
 
 ---
-*Last updated: 2026-03-20 after Phase 09 completion (v2.0 milestone complete)*
+*Last updated: 2026-03-20 after Phase 10 completion — v2.0 milestone COMPLETE*
