@@ -7,9 +7,9 @@ PROJECT_NUMBER = 1.0.0
 PROJECT_BRIEF = "C++17 Header-Only Server-Sent Events Parser"
 
 # Input files
-INPUT = include/sse_parser README.md
+INPUT = include/sse_parser/sse_parser.hpp
 INPUT_ENCODING = UTF-8
-FILE_PATTERNS = *.h *.hpp *.md
+FILE_PATTERNS = *.hpp
 RECURSIVE = YES
 
 # Output settings
