@@ -1,0 +1,142 @@
+# Roadmap: v2.0 Single Header Integration
+
+**Milestone:** v2.0 | **Requirements:** 17 | **Phases:** 5
+
+---
+
+## Summary
+
+| # | Phase | Goal | Requirements | Success Criteria |
+|---|-------|------|--------------|------------------|
+| 6 | Header Consolidation | Merge all headers into single file | HDRI-01, HDRI-02, HDRI-03 | Single `sse_parser.h` contains complete implementation |
+| 7 | API Export Verification | Ensure all symbols exported | HDRI-04 | All public API symbols accessible from single header |
+| 8 | Compilation Optimization | Optimize include structure | COMP-01, COMP-02, COMP-03 | No circular deps, minimal recompilation |
+| 9 | Backward Compatibility | Maintain legacy includes | BCMP-01 to BCMP-05 | Old includes still work with deprecation warnings |
+| 10 | Documentation Update | Update docs for v2.0 | DOCS-01 to DOCS-04 | Migration guide, updated examples |
+
+---
+
+## Phase Details
+
+### Phase 6: Header Consolidation
+
+**Goal:** Merge all header files into a single include
+
+**Requirements:**
+- HDRI-01: Single header file `sse_parser.h` contains complete SSE parser implementation
+- HDRI-02: All component headers merged into single header
+- HDRI-03: Main header includes version macros
+
+**Success Criteria:**
+1. User can `#include "sse_parser/sse_parser.h"` and get complete parser
+2. No separate includes needed for buffer, message, field_parser
+3. Version macros accessible from main header
+4. All 295+ existing tests continue to pass
+
+---
+
+### Phase 7: API Export Verification
+
+**Goal:** Ensure all public API symbols properly exported and accessible
+
+**Requirements:**
+- HDRI-04: Public API symbols properly exported with `SSE_PARSER_API` macro
+
+**Success Criteria:**
+1. `sse::SseParser` class fully accessible
+2. `sse::Message` struct fully accessible
+3. `sse::SseError` enum fully accessible
+4. `sse::Buffer` class fully accessible
+5. `sse::MessageBuilder` class fully accessible
+6. All free functions (parse_field_line, error_message, has_bom, skip_bom) accessible
+7. Both `std::function` and function pointer callbacks work
+
+---
+
+### Phase 8: Compilation Optimization
+
+**Goal:** Optimize include structure for faster compilation
+
+**Requirements:**
+- COMP-01: Include guards prevent double inclusion penalty
+- COMP-02: Header dependencies minimized through forward declarations
+- COMP-03: No circular dependencies between components
+- COMP-04: Compilation time measurable improvement vs v1.0
+
+**Success Criteria:**
+1. Include guards (`#pragma once`) on all headers
+2. Forward declarations used where possible
+3. No circular includes (A includes B, B includes A)
+4. Compilation time benchmark: v2.0 faster or equal to v1.0
+
+---
+
+### Phase 9: Backward Compatibility
+
+**Goal:** Maintain legacy include paths with deprecation warnings
+
+**Requirements:**
+- BCMP-01: Legacy include path `sse_parser/buffer.h` still works
+- BCMP-02: Legacy include path `sse_parser/message.h` still works
+- BCMP-03: Legacy include path `sse_parser/field_parser.h` still works
+- BCMP-04: Legacy include path `sse_parser/sse_parser_facade.h` still works
+- BCMP-05: Deprecation warnings added to legacy include paths
+
+**Success Criteria:**
+1. Old `#include "sse_parser/buffer.h"` compiles with deprecation warning
+2. Old `#include "sse_parser/message.h"` compiles with deprecation warning
+3. Old `#include "sse_parser/field_parser.h"` compiles with deprecation warning
+4. Old `#include "sse_parser/sse_parser_facade.h"` compiles with deprecation warning
+5. Users can migrate incrementally using legacy includes
+
+---
+
+### Phase 10: Documentation Update
+
+**Goal:** Update all documentation for v2.0 release
+
+**Requirements:**
+- DOCS-01: Updated README with v2.0 include instructions
+- DOCS-02: Doxygen configuration updated for single header
+- DOCS-03: Migration guide from v1.x to v2.0 provided
+- DOCS-04: All usage examples updated to single include
+
+**Success Criteria:**
+1. README shows new `#include "sse_parser/sse_parser.h"` pattern
+2. Migration guide explains breaking changes and upgrade path
+3. All 8 usage examples use single include
+4. Doxygen generates correct documentation for single header
+5. CHANGELOG.md created with v2.0 changes
+
+---
+
+## Success Criteria Summary
+
+**All phases must achieve:**
+
+1. **Functionality**: All 295+ existing tests pass unchanged
+2. **Simplicity**: User can get complete SSE parser with one include
+3. **Compatibility**: Legacy includes work with deprecation warnings
+4. **Performance**: Compilation time not worse than v1.0
+5. **Documentation**: Clear migration path for v1.x users
+
+---
+
+## Dependencies
+
+```
+Phase 6 (Header Consolidation)
+    ↓
+Phase 7 (API Export Verification) ← depends on Phase 6
+    ↓
+Phase 8 (Compilation Optimization) ← depends on Phase 7
+    ↓
+Phase 9 (Backward Compatibility) ← depends on Phase 6
+    ↓
+Phase 10 (Documentation Update) ← depends on Phase 8, 9
+```
+
+---
+
+**Created:** 2026-03-20
+**Milestone:** v2.0 Single Header Integration
