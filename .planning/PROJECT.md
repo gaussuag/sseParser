@@ -4,6 +4,7 @@
 
 **v1.0 SHIPPED** — 2026-03-19
 **Phase 6 (Header Consolidation) Complete** — 2026-03-20
+**Phase 7 (API Export Verification) Complete** — 2026-03-20
 
 A production-ready C++17 header-only library for parsing Server-Sent Events (SSE) protocol. Successfully handles real-world LLM streaming scenarios with 295 tests passing.
 
@@ -60,7 +61,7 @@ Parse any valid SSE stream correctly, regardless of how network chunks arrive, a
 | Error codes vs exceptions | Embedded-friendly, deterministic | ✅ Validated — clean |
 | string_view input | Zero-copy, modern C++ | ✅ Validated — efficient |
 | std::string for Buffer | Usability over strict zero-allocation | ⚠️ Accepted deviation |
-| v2.0 Single Header | Simplified user include experience | ✅ Validated — Phase 06 complete, single sse_parser.hpp |
+| v2.0 Single Header | Simplified user include experience | ✅ Validated — Phase 07 complete, all API symbols verified accessible |
 
 ---
-*Last updated: 2026-03-20 after Phase 06 completion*
+*Last updated: 2026-03-20 after Phase 07 completion*
