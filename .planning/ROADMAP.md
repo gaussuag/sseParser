@@ -50,6 +50,9 @@
 5. `sse::MessageBuilder` class fully accessible
 6. All free functions (parse_field_line, error_message, has_bom, skip_bom) accessible
 7. Both `std::function` and function pointer callbacks work
+8. All 298 tests pass with single-header include
+
+**Status:** ● Complete (2026-03-20) - All criteria verified, 298 tests pass
 
 ---
 
