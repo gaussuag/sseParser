@@ -1,7 +1,5 @@
 #include <gtest/gtest.h>
-#include "sse_parser/buffer.h"
-#include "sse_parser/message.h"
-#include "sse_parser/error_codes.h"
+#include "sse_parser/sse_parser.hpp"
 
 #include <string>
 #include <string_view>

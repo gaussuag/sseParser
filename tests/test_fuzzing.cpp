@@ -6,10 +6,7 @@
 #include <algorithm>
 #include <cctype>
 
-#include "sse_parser/sse_parser_facade.h"
-#include "sse_parser/buffer.h"
-#include "sse_parser/message_builder.h"
-#include "sse_parser/field_parser.h"
+#include "sse_parser/sse_parser.hpp"
 
 using namespace sse;
 using namespace std::chrono;

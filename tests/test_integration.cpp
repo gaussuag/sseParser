@@ -3,7 +3,7 @@
 #include <thread>
 #include <vector>
 #include <sstream>
-#include "sse_parser/sse_parser_facade.h"
+#include "sse_parser/sse_parser.hpp"
 
 using namespace sse;
 

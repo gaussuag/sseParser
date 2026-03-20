@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "sse_parser/error_codes.h"
+#include "sse_parser/sse_parser.hpp"
 
 using namespace sse;
 

@@ -1,7 +1,5 @@
 #include <gtest/gtest.h>
-#include "sse_parser/buffer.h"
-#include "sse_parser/field_parser.h"
-#include "sse_parser/message.h"
+#include "sse_parser/sse_parser.hpp"
 
 using namespace sse;
 
